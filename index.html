@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V&eacute;rtice &middot; Marketing con IA &mdash; Fernanda Rivera</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg:#0A0A0A; --card:#141414; --elem:#1C1C1C; --border:#262626;
+    --green:#2D6A4F; --green-light:#4ade80; --green-mid:#86efac; --green-dark:#1A4731;
+    --amber:#fbbf24; --gold:#fde047; --orange:#f97316; --red:#f87171; --violet:#7c3aed;
+    --text:#ffffff; --text2:#9CA3AF;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    background:var(--bg); color:var(--text);
+    font-family:'Montserrat', sans-serif;
+    padding-bottom:60px;
+  }
+  a { color:inherit; }
+
+  header {
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,10,10,0.92); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+    padding:14px 24px;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+  .brand { display:flex; align-items:center; gap:10px; }
+  .brand-name { font-weight:800; font-size:16px; letter-spacing:0.5px; }
+  .brand-sub { font-size:11px; color:var(--text2); font-weight:600; }
+  .header-right { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .badge-status {
+    font-size:11px; font-weight:700; padding:5px 12px; border-radius:999px;
+    background:var(--green-dark); color:var(--green-light); border:1px solid var(--green);
+    letter-spacing:0.5px;
+  }
+  .updated { font-size:11px; color:var(--text2); }
+
+  main { max-width:1200px; margin:0 auto; padding:20px 24px; }
+
+  h1.launch-title { font-size:22px; font-weight:800; margin-bottom:2px; }
+  .launch-sub { color:var(--text2); font-size:13px; margin-bottom:20px; }
+
+  .banner {
+    background:linear-gradient(135deg, var(--green-dark), var(--green));
+    border-radius:14px; padding:20px;
+    display:grid; grid-template-columns:repeat(5,1fr); gap:16px;
+    margin-bottom:24px;
+  }
+  .banner .item { text-align:center; }
+  .banner .val { font-size:22px; font-weight:800; color:#fff; }
+  .banner .lbl { font-size:11px; color:#d1f7e0; margin-top:4px; font-weight:600; }
+  .banner .sub { font-size:11px; color:#eafff2; opacity:0.85; }
+
+  .kpi-grid {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:12px;
+    margin-bottom:28px;
+  }
+  .kpi {
+    background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:14px 16px; border-top:3px solid var(--border);
+  }
+  .kpi .lbl { font-size:11px; color:var(--text2); font-weight:600; text-transform:uppercase; letter-spacing:0.4px; }
+  .kpi .val { font-size:19px; font-weight:800; margin-top:6px; }
+  .kpi .note { font-size:10.5px; color:var(--text2); margin-top:3px; }
+  .kpi.acc-green { border-top-color:var(--green-light); }
+  .kpi.acc-white { border-top-color:#fff; }
+  .kpi.acc-amber { border-top-color:var(--amber); }
+  .kpi.acc-gold { border-top-color:var(--gold); }
+  .kpi.acc-green .val { color:var(--green-light); }
+  .kpi.acc-amber .val { color:var(--amber); }
+  .kpi.acc-gold .val { color:var(--gold); }
+  .kpi.pending .val { color:var(--text2); font-size:15px; }
+
+  .tabs { display:flex; gap:6px; border-bottom:1px solid var(--border); margin-bottom:20px; overflow-x:auto; }
+  .tab-btn {
+    background:none; border:none; color:var(--text2); font-family:inherit;
+    font-size:13px; font-weight:700; padding:10px 16px; cursor:pointer;
+    border-bottom:2px solid transparent; white-space:nowrap;
+  }
+  .tab-btn.active { color:var(--green-light); border-bottom-color:var(--green-light); }
+  .tab-panel { display:none; }
+  .tab-panel.active { display:block; }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
+  .card {
+    background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px;
+  }
+  .card h3 { font-size:13px; font-weight:700; margin-bottom:12px; color:var(--text); }
+  .card h3 .tag { font-size:10.5px; color:var(--text2); font-weight:600; margin-left:6px; }
+  .chart-wrap { position:relative; height:260px; }
+
+  .camp-cards { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:16px; }
+  .camp-card { background:var(--elem); border:1px solid var(--border); border-radius:10px; padding:12px 14px; }
+  .camp-card .name { font-size:12px; font-weight:700; margin-bottom:8px; }
+  .camp-card .row { display:flex; justify-content:space-between; font-size:11.5px; color:var(--text2); margin-top:4px; }
+  .camp-card .row b { color:var(--text); font-weight:700; }
+  .chip { display:inline-block; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:999px; }
+  .chip.best { background:var(--green-dark); color:var(--green-light); }
+  .chip.worst { background:#3a1f1f; color:var(--red); }
+
+  table { width:100%; border-collapse:collapse; font-size:12px; }
+  th, td { padding:9px 10px; text-align:left; border-bottom:1px solid var(--border); }
+  th { color:var(--text2); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.3px; }
+  tr.total-row td { font-weight:800; border-top:2px solid var(--green); border-bottom:none; color:var(--green-light); }
+  .table-wrap { overflow-x:auto; }
+  .acc-border-green { border:1px solid var(--green); border-radius:12px; padding:16px; margin-bottom:16px; }
+
+  .empty-state {
+    text-align:center; padding:50px 20px; color:var(--text2);
+    background:var(--card); border:1px dashed var(--border); border-radius:12px;
+  }
+  .empty-state .big { font-size:15px; color:var(--text); font-weight:700; margin-bottom:6px; }
+
+  .funnel { display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
+  .funnel-step { display:flex; align-items:center; gap:12px; }
+  .funnel-label { width:170px; font-size:12px; color:var(--text2); font-weight:600; flex-shrink:0; }
+  .funnel-bar-wrap { flex:1; background:var(--elem); border-radius:8px; overflow:hidden; height:30px; position:relative; }
+  .funnel-bar { height:100%; background:linear-gradient(90deg, var(--green-dark), var(--green-light)); display:flex; align-items:center; padding-left:10px; font-size:12px; font-weight:700; border-radius:8px; }
+  .funnel-val { width:90px; text-align:right; font-size:13px; font-weight:800; flex-shrink:0; }
+
+  .compare-cards { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
+  .compare-card { background:var(--elem); border:1px solid var(--border); border-radius:10px; padding:16px; text-align:center; }
+  .compare-card .lbl { font-size:11px; color:var(--text2); font-weight:700; text-transform:uppercase; }
+  .compare-card .val { font-size:24px; font-weight:800; margin-top:6px; }
+  .compare-card.meta .val { color:var(--green-light); }
+  .compare-card.crm .val { color:var(--amber); }
+
+  .stat-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+  .stat-box { background:var(--elem); border:1px solid var(--border); border-radius:10px; padding:12px; text-align:center; }
+  .stat-box .val { font-size:18px; font-weight:800; }
+  .stat-box .lbl { font-size:10.5px; color:var(--text2); margin-top:4px; }
+
+  .note-box {
+    background:var(--elem); border-left:3px solid var(--amber); border-radius:6px;
+    padding:10px 14px; font-size:11.5px; color:var(--text2); margin-top:12px; line-height:1.5;
+  }
+  .note-box b { color:var(--amber); }
+
+  .country-list, .flag-list { list-style:none; margin-top:10px; }
+  .country-list li, .flag-list li { display:flex; justify-content:space-between; font-size:12px; padding:6px 0; border-bottom:1px solid var(--border); }
+  .flag { margin-right:6px; }
+
+  .age-chip-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+  .age-chip { background:var(--elem); border:1px solid var(--border); border-radius:8px; padding:6px 10px; font-size:11px; }
+  .age-chip b { color:var(--green-light); }
+
+  .winner-cards { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-top:16px; }
+  .winner-card { background:var(--elem); border:1px solid var(--border); border-radius:10px; padding:14px 12px; position:relative; }
+  .winner-card .rank { position:absolute; top:-10px; left:12px; background:var(--green-light); color:#0A0A0A; font-weight:800; font-size:11px; padding:2px 9px; border-radius:999px; }
+  .winner-card.rank1 { border-color:var(--gold); }
+  .winner-card.rank1 .rank { background:var(--gold); }
+  .winner-card .name { font-size:11.5px; font-weight:700; margin-top:8px; margin-bottom:8px; }
+  .winner-card .metric-row { display:flex; justify-content:space-between; font-size:10.5px; color:var(--text2); margin-top:4px; }
+  .winner-card .metric-row b { color:var(--text); font-weight:700; }
+  .winner-card .metric-row.highlight b { color:var(--green-light); }
+
+  footer { text-align:center; color:var(--text2); font-size:11px; padding:24px; }
+
+  @media (max-width: 860px) {
+    .banner { grid-template-columns:repeat(2,1fr); }
+    .kpi-grid { grid-template-columns:repeat(2,1fr); }
+    .grid-2, .compare-cards, .camp-cards { grid-template-columns:1fr; }
+    .stat-row { grid-template-columns:repeat(2,1fr); }
+    .winner-cards { grid-template-columns:repeat(2,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <svg width="30" height="30" viewBox="0 0 100 100"><polygon points="50,8 92,88 8,88" fill="none" stroke="#2D6A4F" stroke-width="8"/><polygon points="50,38 72,82 28,82" fill="#4ade80"/></svg>
+    <div>
+      <div class="brand-name">V&Eacute;RTICE</div>
+      <div class="brand-sub">Panel de Lanzamiento</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="badge-status">EN CURSO</span>
+    <span class="updated">Actualizado: 14 jul 2026 &middot; 11:47 UTC</span>
+  </div>
+</header>
+
+<main>
+  <h1 class="launch-title">Marketing con IA &mdash; Fernanda Rivera</h1>
+  <p class="launch-sub">Per&iacute;odo de lanzamiento: 13 jul &ndash; 2 ago 2026 &middot; Captaci&oacute;n org&aacute;nica desde el 10 jul &middot; Cuenta Meta: Fernanda Rivera (104680897, ARS) &middot; Campa&ntilde;as filtradas por "L10726"</p>
+
+  <div class="banner">
+    <div class="item"><div class="val">$64.857</div><div class="lbl">Inversi&oacute;n Ads (ARS)</div></div>
+    <div class="item"><div class="val">64</div><div class="lbl">Leads Meta</div><div class="sub">CPL $1.013 ARS</div></div>
+    <div class="item"><div class="val">0</div><div class="lbl">Ventas cerradas</div><div class="sub">a&uacute;n sin etapa de venta</div></div>
+    <div class="item"><div class="val">$0</div><div class="lbl">Facturaci&oacute;n total</div><div class="sub">pendiente</div></div>
+    <div class="item"><div class="val">&mdash;</div><div class="lbl">ROAS total</div><div class="sub">pendiente</div></div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi acc-green"><div class="lbl">Gasto Cta. Principal</div><div class="val">$64.857,38</div><div class="note">ARS &middot; 2 campa&ntilde;as L10726</div></div>
+    <div class="kpi acc-green"><div class="lbl">CPL promedio (Meta)</div><div class="val">$1.013,40</div><div class="note">ARS por lead (Meta)</div></div>
+    <div class="kpi acc-white"><div class="lbl">Leads Cta. Principal</div><div class="val">64</div><div class="note">Website leads (Meta p&iacute;xel)</div></div>
+    <div class="kpi acc-white"><div class="lbl">Registros CRM (total)</div><div class="val">119</div><div class="note">60 pagados + 59 org&aacute;nicos</div></div>
+    <div class="kpi acc-amber"><div class="lbl">Costo por Registro CRM</div><div class="val">$1.080,96</div><div class="note">solo tr&aacute;fico pagado (60 registros)</div></div>
+    <div class="kpi pending acc-amber"><div class="lbl">Ventas</div><div class="val">Pendiente</div><div class="note">se activa al vender</div></div>
+    <div class="kpi pending acc-amber"><div class="lbl">Facturaci&oacute;n total</div><div class="val">Pendiente</div><div class="note">se activa al vender</div></div>
+    <div class="kpi pending acc-gold"><div class="lbl">ROAS total</div><div class="val">Pendiente</div><div class="note">facturaci&oacute;n / gasto</div></div>
+    <div class="kpi pending acc-gold"><div class="lbl">ROAS Hotmart</div><div class="val">Pendiente</div><div class="note">solo trackeable</div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="ads">Ads</button>
+    <button class="tab-btn" data-tab="ventas">Ventas</button>
+    <button class="tab-btn" data-tab="campanas">Campa&ntilde;as</button>
+    <button class="tab-btn" data-tab="crm">Registro / CRM</button>
+    <button class="tab-btn" data-tab="audiencia">Audiencia</button>
+  </div>
+
+  <!-- TAB 1: ADS -->
+  <div class="tab-panel active" id="tab-ads">
+    <div class="grid-2">
+      <div class="card">
+        <h3>Evoluci&oacute;n CPL diario <span class="tag">ARS &middot; costo por lead</span></h3>
+        <div class="chart-wrap"><canvas id="chartCPL"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>Leads diarios</h3>
+        <div class="chart-wrap"><canvas id="chartLeadsDiarios"></canvas></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Top 5 anuncios ganadores <span class="tag">ordenados por menor CPL CRM</span></h3>
+      <div class="winner-cards" id="winnerCards"></div>
+      <div class="note-box"><b>Nota:</b> el CPL CRM se calcul&oacute; cruzando el <code>utm_content</code>/<code>utm_campaign</code> de cada registro en la base de datos con el anuncio (ad) correspondiente en Meta. Cuando CPL Meta y CPL CRM coinciden, todos los leads reportados por el p&iacute;xel llegaron a registrarse en el CRM.</div>
+    </div>
+
+    <div class="card">
+      <h3>Campa&ntilde;as &mdash; detalle</h3>
+      <div class="camp-cards">
+        <div class="camp-card">
+          <div class="name">EA-CAPTACION-TF-L10726-TEST &middot; Copia <span class="chip best">Mejor CPL</span></div>
+          <div class="row"><span>Leads</span><b>58</b></div>
+          <div class="row"><span>CPL</span><b>$929,13 ARS</b></div>
+          <div class="row"><span>% del total</span><b>90,6%</b></div>
+          <div class="row"><span>Gasto</span><b>$53.889,80 ARS</b></div>
+        </div>
+        <div class="camp-card">
+          <div class="name">EA-CAPTACION-TF-L10726-TEST <span class="chip worst">CPL m&aacute;s alto</span></div>
+          <div class="row"><span>Leads</span><b>6</b></div>
+          <div class="row"><span>CPL</span><b>$1.827,93 ARS</b></div>
+          <div class="row"><span>% del total</span><b>9,4%</b></div>
+          <div class="row"><span>Gasto</span><b>$10.967,58 ARS</b></div>
+        </div>
+      </div>
+      <div class="note-box"><b>Nota:</b> ambas campa&ntilde;as comparten el mismo nombre en el Administrador de Anuncios (ambas "EA-CAPTACION-TF-L10726-TEST"). Se distinguieron por ID y se reconciliaron contra los UTM de la base de registros (una usa el UTM "...-TEST" y la otra "...-TEST - Copia").</div>
+    </div>
+  </div>
+
+  <!-- TAB 2: VENTAS -->
+  <div class="tab-panel" id="tab-ventas">
+    <div class="empty-state">
+      <div class="big">Todav&iacute;a no hay ventas que mostrar</div>
+      <div>Fernanda confirm&oacute; que este lanzamiento a&uacute;n no entra en etapa de venta. En cuanto compartas el Excel de Hotmart (u otra plataforma), esta pesta&ntilde;a se completa con: KPIs de ventas, ROAS, tipos de pago, pa&iacute;ses, precios y demograf&iacute;a de compradores.</div>
+    </div>
+  </div>
+
+  <!-- TAB 3: CAMPA&Ntilde;AS -->
+  <div class="tab-panel" id="tab-campanas">
+    <div class="acc-border-green">
+      <h3 style="margin-bottom:12px;">Cuenta principal &mdash; Fernanda Rivera (104680897, ARS)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Campa&ntilde;a</th><th>Gasto (ARS)</th><th>Leads</th><th>CPL (ARS)</th><th>Impresiones</th><th>Alcance</th><th>Tipo</th></tr></thead>
+          <tbody>
+            <tr><td>EA-CAPTACION-TF-L10726-TEST &middot; Copia (ID 6968688430281)</td><td>$53.889,80</td><td>58</td><td>$929,13</td><td>6.576</td><td>4.818</td><td>Captaci&oacute;n</td></tr>
+            <tr><td>EA-CAPTACION-TF-L10726-TEST (ID 6967166854481)</td><td>$10.967,58</td><td>6</td><td>$1.827,93</td><td>835</td><td>789</td><td>Captaci&oacute;n</td></tr>
+            <tr class="total-row"><td>Total</td><td>$64.857,38</td><td>64</td><td>$1.013,40</td><td>7.411</td><td>5.607</td><td>&mdash;</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4: REGISTRO / CRM -->
+  <div class="tab-panel" id="tab-crm">
+    <div class="card">
+      <h3>Embudo del lanzamiento <span class="tag">no usa SendFlow &mdash; CRM propio v&iacute;a base de datos de la landing</span></h3>
+      <div class="funnel" id="funnelWrap"></div>
+      <div class="note-box"><b>Nota:</b> "Registros CRM" incluye tr&aacute;fico org&aacute;nico (Instagram, WhatsApp) adem&aacute;s del pago v&iacute;a Meta, por eso su valor puede superar a "Leads Meta" &mdash; no es una ca&iacute;da del embudo, son fuentes adicionales sumadas.</div>
+    </div>
+
+    <div class="compare-cards">
+      <div class="compare-card meta"><div class="lbl">CPL Meta (reportado)</div><div class="val">$1.013 ARS</div></div>
+      <div class="compare-card crm"><div class="lbl">CPL CRM (registros pagados reales)</div><div class="val">$1.081 ARS</div></div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-box"><div class="val">119</div><div class="lbl">Registros CRM totales</div></div>
+      <div class="stat-box" style="border-color:var(--green);"><div class="val">60</div><div class="lbl">Registros CRM &mdash; pagado (L10726)</div><div class="note" style="margin-top:4px;">$1.080,96 ARS / registro</div></div>
+      <div class="stat-box" style="border-color:var(--violet);"><div class="val">59</div><div class="lbl">Registros CRM &mdash; org&aacute;nico (IG / WhatsApp)</div><div class="note" style="margin-top:4px;">$0 &mdash; sin costo de medios</div></div>
+      <div class="stat-box"><div class="val">10&ndash;14 jul</div><div class="lbl">Rango de datos disponible</div></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Leads Meta vs Registros CRM por d&iacute;a</h3>
+        <div class="chart-wrap"><canvas id="chartMetaVsCRM"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>Registros CRM por fuente</h3>
+        <div class="chart-wrap"><canvas id="chartFuente"></canvas></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Detalle diario</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Fecha</th><th>Gasto Meta</th><th>Leads Meta</th><th>CPL Meta</th><th>Registros CRM (total)</th><th>Pagados</th><th>Org&aacute;nicos</th><th>CPL CRM</th></tr></thead>
+          <tbody id="dailyTableBody"></tbody>
+        </table>
+      </div>
+      <div class="note-box"><b>Nota:</b> las filas diarias muestran una peque&ntilde;a diferencia de redondeo frente a los totales de la pesta&ntilde;a Campa&ntilde;as (Meta reporta el desglose por d&iacute;a con leves variaciones respecto al agregado &mdash; algo habitual en el Administrador de Anuncios). Adem&aacute;s, el CPL CRM del 14 jul se ve inusualmente bajo porque Meta suele tardar 24&ndash;48&nbsp;h en reflejar todos los leads del d&iacute;a m&aacute;s reciente: conviene mirar los acumulados en vez del CPL de un solo d&iacute;a reci&eacute;n cerrado.</div>
+    </div>
+  </div>
+
+  <!-- TAB 5: AUDIENCIA -->
+  <div class="tab-panel" id="tab-audiencia">
+    <div class="grid-2">
+      <div class="card">
+        <h3>Pa&iacute;ses de leads (Meta)</h3>
+        <div class="chart-wrap"><canvas id="chartPaises"></canvas></div>
+        <ul class="country-list"><li><span><span class="flag">&#127462;&#127479;</span>Argentina</span><span>64 leads &middot; 100%</span></li></ul>
+      </div>
+      <div class="card">
+        <h3>G&eacute;nero</h3>
+        <div class="chart-wrap"><canvas id="chartGenero"></canvas></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Edades (leads por rango)</h3>
+      <div class="chart-wrap"><canvas id="chartEdades"></canvas></div>
+      <div class="age-chip-row">
+        <div class="age-chip">18-24 &middot; <b>5</b> leads</div>
+        <div class="age-chip">25-34 &middot; <b>9</b> leads</div>
+        <div class="age-chip">35-44 &middot; <b>16</b> leads</div>
+        <div class="age-chip">45-54 &middot; <b>22</b> leads</div>
+        <div class="age-chip">55-64 &middot; <b>9</b> leads</div>
+        <div class="age-chip">65+ &middot; <b>3</b> leads</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>Panel V&eacute;rtice &middot; Generado con datos en vivo de Meta Ads (API) y la base de datos Supabase del proyecto "AI Masterclass Launch" (Lovable) &middot; &Uacute;ltima actualizaci&oacute;n: 14 jul 2026, 11:47 UTC</footer>
+
+<script>
+// ---------- DATA ----------
+const DAILY_LABELS = ["10 Jul","11 Jul","12 Jul","13 Jul","14 Jul"];
+const DAILY_SPEND_META = [0,0,0,61700.90,3377.80];
+const DAILY_LEADS_META = [0,0,0,62,2];
+const DAILY_CPL_META = [null,null,null,995.18,1688.90];
+const DAILY_CRM_TOTAL = [7,28,2,57,25];
+const DAILY_CRM_PAID = [0,0,0,39,21];
+const DAILY_CRM_ORGANIC = [7,28,2,18,4];
+
+const FUNNEL = [
+  { label:"Inversión (ARS)", value:64857.38, display:"$64.857" },
+  { label:"Impresiones", value:7411, display:"7.411" },
+  { label:"Alcance", value:5607, display:"5.607" },
+  { label:"Leads Meta", value:64, display:"64" },
+  { label:"Registros CRM", value:119, display:"119" },
+  { label:"Ventas", value:0, display:"0 (pendiente)" },
+];
+
+// Top 5 anuncios ganadores — cruce Meta (ad-level) x CRM (utm_content/utm_campaign), ordenado por menor CPL CRM
+const WINNER_ADS = [
+  { rank:1, name:"AD4", campaign:"TEST", spend:743.84, impressions:57, metaLeads:3, crmLeads:3 },
+  { rank:2, name:"AD3", campaign:"Copia", spend:8422.36, impressions:1035, metaLeads:16, crmLeads:15 },
+  { rank:3, name:"AD7", campaign:"Copia", spend:7616.80, impressions:904, metaLeads:13, crmLeads:12 },
+  { rank:4, name:"AD2", campaign:"Copia", spend:7165.00, impressions:1229, metaLeads:10, crmLeads:9 },
+  { rank:5, name:"AD2", campaign:"TEST", spend:849.12, impressions:88, metaLeads:1, crmLeads:1 },
+];
+
+const FUENTE_LABELS = ["Instagram (orgánico)","WhatsApp (orgánico)","Directo/sin UTM","Instagram (pago)","Facebook (pago)"];
+// Instagram orgánico: 7(10jul)+9(11jul)+8(13jul)+3(14jul)=27 · WhatsApp orgánico: 19(11jul)+2(12jul)+7(13jul)=28
+// Directo/sin UTM: 3(13jul)+1(14jul)=4 · Instagram pago: 30(13jul)+17(14jul)=47 · Facebook pago: 6(13jul)+3(13jul TEST)+4(14jul)=13 · Total=119
+const FUENTE_VALUES = [27, 28, 4, 47, 13];
+
+const COUNTRY_LABELS = ["Argentina"];
+const COUNTRY_VALUES = [64];
+
+const GENDER = { femenino:59, masculino:5, unknown:0 };
+const AGES = [
+  { range:"18-24", value:5 },
+  { range:"25-34", value:9 },
+  { range:"35-44", value:16 },
+  { range:"45-54", value:22 },
+  { range:"55-64", value:9 },
+  { range:"65+", value:3 },
+];
+
+// ---------- TABS ----------
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ---------- FUNNEL ----------
+const funnelWrap = document.getElementById('funnelWrap');
+const maxVal = Math.max(...FUNNEL.map(f => f.value));
+FUNNEL.forEach(step => {
+  const pct = maxVal > 0 ? Math.max((step.value / maxVal) * 100, 4) : 4;
+  const el = document.createElement('div');
+  el.className = 'funnel-step';
+  el.innerHTML = `<div class="funnel-label">${step.label}</div>
+    <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:${pct}%"></div></div>
+    <div class="funnel-val">${step.display}</div>`;
+  funnelWrap.appendChild(el);
+});
+
+// ---------- TOP 5 ANUNCIOS GANADORES ----------
+const winnerWrap = document.getElementById('winnerCards');
+WINNER_ADS.forEach(ad => {
+  const cplMeta = ad.metaLeads > 0 ? (ad.spend/ad.metaLeads) : null;
+  const cplCrm = ad.crmLeads > 0 ? (ad.spend/ad.crmLeads) : null;
+  const el = document.createElement('div');
+  el.className = 'winner-card' + (ad.rank === 1 ? ' rank1' : '');
+  el.innerHTML = `<div class="rank">#${ad.rank}</div>
+    <div class="name">${ad.name} <span class="tag" style="font-size:9.5px;">(${ad.campaign})</span></div>
+    <div class="metric-row highlight"><span>CPL CRM</span><b>${cplCrm? '$'+cplCrm.toLocaleString('es-AR',{maximumFractionDigits:0}) : '—'}</b></div>
+    <div class="metric-row"><span>CPL Meta</span><b>${cplMeta? '$'+cplMeta.toLocaleString('es-AR',{maximumFractionDigits:0}) : '—'}</b></div>
+    <div class="metric-row"><span>Impresiones</span><b>${ad.impressions.toLocaleString('es-AR')}</b></div>
+    <div class="metric-row"><span>Gasto</span><b>$${ad.spend.toLocaleString('es-AR',{minimumFractionDigits:2})}</b></div>`;
+  winnerWrap.appendChild(el);
+});
+
+// ---------- DAILY TABLE ----------
+const tbody = document.getElementById('dailyTableBody');
+let totalSpend=0, totalLeadsMeta=0, totalCRM=0, totalPaid=0, totalOrganic=0;
+DAILY_LABELS.forEach((label, i) => {
+  const spend = DAILY_SPEND_META[i], leads = DAILY_LEADS_META[i];
+  const cpl = DAILY_CPL_META[i];
+  const crmTotal = DAILY_CRM_TOTAL[i], paid = DAILY_CRM_PAID[i], organic = DAILY_CRM_ORGANIC[i];
+  const cplCrm = paid > 0 ? (spend/paid) : null;
+  totalSpend+=spend; totalLeadsMeta+=leads; totalCRM+=crmTotal; totalPaid+=paid; totalOrganic+=organic;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${label}</td><td>${spend? '$'+spend.toLocaleString('es-AR',{minimumFractionDigits:2}) : '—'}</td>
+    <td>${leads||'—'}</td><td>${cpl? '$'+cpl.toLocaleString('es-AR',{minimumFractionDigits:2}) : '—'}</td>
+    <td>${crmTotal}</td><td>${paid||'—'}</td><td>${organic}</td>
+    <td>${cplCrm? '$'+cplCrm.toLocaleString('es-AR',{minimumFractionDigits:2}) : '—'}</td>`;
+  tbody.appendChild(tr);
+});
+const trTotal = document.createElement('tr');
+trTotal.className = 'total-row';
+trTotal.innerHTML = `<td>Total</td><td>$${totalSpend.toLocaleString('es-AR',{minimumFractionDigits:2})}</td>
+  <td>${totalLeadsMeta}</td><td>$${(totalSpend/totalLeadsMeta).toLocaleString('es-AR',{minimumFractionDigits:2})}</td>
+  <td>${totalCRM}</td><td>${totalPaid}</td><td>${totalOrganic}</td>
+  <td>$${(totalSpend/totalPaid).toLocaleString('es-AR',{minimumFractionDigits:2})}</td>`;
+tbody.appendChild(trTotal);
+
+// ---------- CHARTS ----------
+Chart.defaults.color = '#9CA3AF';
+Chart.defaults.font.family = 'Montserrat';
+Chart.defaults.borderColor = '#262626';
+
+function fmtARS(v) { return '$' + Number(v).toLocaleString('es-AR', { maximumFractionDigits: 0 }); }
+const gridColor = 'rgba(255,255,255,0.06)';
+const axisTitle = (text) => ({ display:true, text, color:'#9CA3AF', font:{ size:11, weight:'700', family:'Montserrat' }, padding:{ top:6 } });
+
+const valueLabelPlugin = {
+  id: 'valueLabel',
+  afterDatasetsDraw(chart, args, opts) {
+    if (!opts) return;
+    const { ctx } = chart;
+    const isHorizontal = chart.options.indexAxis === 'y';
+    chart.data.datasets.forEach((dataset, di) => {
+      const meta = chart.getDatasetMeta(di);
+      if (meta.hidden) return;
+      meta.data.forEach((el, i) => {
+        const raw = dataset.data[i];
+        if (raw === null || raw === undefined) return;
+        const text = opts.formatter ? opts.formatter(raw, dataset, i) : String(raw);
+        if (!text) return;
+        ctx.save();
+        ctx.fillStyle = opts.color || '#ffffff';
+        ctx.font = "700 11px Montserrat";
+        const pos = el.tooltipPosition ? el.tooltipPosition() : el;
+        if (isHorizontal) {
+          ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+          ctx.fillText(text, pos.x + 10, pos.y);
+        } else {
+          ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+          ctx.fillText(text, pos.x, pos.y - 8);
+        }
+        ctx.restore();
+      });
+    });
+  }
+};
+Chart.register(valueLabelPlugin);
+
+const centerTextPlugin = {
+  id: 'centerText',
+  afterDraw(chart, args, opts) {
+    if (!opts || !opts.text) return;
+    const { ctx, chartArea } = chart;
+    const cx = (chartArea.left + chartArea.right) / 2;
+    const cy = (chartArea.top + chartArea.bottom) / 2;
+    ctx.save();
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = "800 22px Montserrat"; ctx.fillStyle = '#ffffff';
+    ctx.fillText(opts.text, cx, cy - 8);
+    if (opts.sub) { ctx.font = "600 10.5px Montserrat"; ctx.fillStyle = '#9CA3AF'; ctx.fillText(opts.sub, cx, cy + 13); }
+    ctx.restore();
+  }
+};
+Chart.register(centerTextPlugin);
+
+new Chart(document.getElementById('chartCPL'), {
+  type:'line',
+  data:{ labels:DAILY_LABELS, datasets:[{
+    label:'CPL (ARS)', data:DAILY_CPL_META,
+    borderColor:'#4ade80', backgroundColor:'rgba(74,222,128,0.18)',
+    tension:0.35, fill:true, spanGaps:true, borderWidth:2.5,
+    pointBackgroundColor: DAILY_CPL_META.map(v => v!==null ? '#4ade80' : 'transparent'),
+    pointBorderColor:'#0A0A0A', pointBorderWidth:2, pointRadius:6, pointHoverRadius:8,
+  }] },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    layout:{ padding:{ top:26 } },
+    plugins:{
+      legend:{ display:false },
+      valueLabel:{ color:'#4ade80', formatter:(v)=> v!==null ? fmtARS(v) : '' },
+      tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10, titleColor:'#fff', bodyColor:'#4ade80',
+        callbacks:{ label:(ctx)=> ' CPL: ' + fmtARS(ctx.raw) } }
+    },
+    scales:{
+      x:{ grid:{ color:gridColor, drawTicks:false }, title:axisTitle('Fecha del lanzamiento') },
+      y:{ beginAtZero:true, grid:{ color:gridColor }, title:axisTitle('Costo por lead (ARS)'), ticks:{ callback:(v)=>fmtARS(v) } }
+    }
+  }
+});
+
+new Chart(document.getElementById('chartLeadsDiarios'), {
+  type:'bar',
+  data:{ labels:DAILY_LABELS, datasets:[{
+    label:'Leads', data:DAILY_LEADS_META, borderRadius:6, maxBarThickness:44,
+    backgroundColor: DAILY_LEADS_META.map(v => v === Math.max(...DAILY_LEADS_META) && v>0 ? '#4ade80' : '#2D6A4F'),
+    hoverBackgroundColor:'#86efac'
+  }] },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    layout:{ padding:{ top:26 } },
+    plugins:{
+      legend:{ display:false },
+      valueLabel:{ color:'#ffffff', formatter:(v)=> v>0 ? v : '' },
+      tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10, titleColor:'#fff', bodyColor:'#4ade80',
+        callbacks:{ label:(ctx)=> ' ' + ctx.raw + ' leads' } }
+    },
+    scales:{
+      x:{ grid:{ display:false }, title:axisTitle('Fecha del lanzamiento') },
+      y:{ beginAtZero:true, grid:{ color:gridColor }, title:axisTitle('Cantidad de leads'), ticks:{ precision:0 } }
+    }
+  }
+});
+
+new Chart(document.getElementById('chartMetaVsCRM'), {
+  type:'bar',
+  data:{ labels:DAILY_LABELS, datasets:[
+    { label:'Leads Meta', data:DAILY_LEADS_META, backgroundColor:'#2D6A4F', borderRadius:5, maxBarThickness:34 },
+    { label:'Registros CRM', data:DAILY_CRM_TOTAL, backgroundColor:'#fbbf24', borderRadius:5, maxBarThickness:34 }
+  ]},
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    layout:{ padding:{ top:22 } },
+    plugins:{
+      legend:{ position:'bottom', labels:{ boxWidth:10, usePointStyle:true, pointStyle:'circle' } },
+      valueLabel:{ color:'#ffffff', formatter:(v)=> v>0 ? v : '' },
+      tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10 }
+    },
+    scales:{
+      x:{ grid:{ display:false }, title:axisTitle('Fecha') },
+      y:{ beginAtZero:true, grid:{ color:gridColor }, title:axisTitle('Cantidad') }
+    }
+  }
+});
+
+new Chart(document.getElementById('chartFuente'), {
+  type:'doughnut',
+  data:{ labels:FUENTE_LABELS, datasets:[{ data:FUENTE_VALUES, backgroundColor:['#86efac','#4ade80','#9CA3AF','#2D6A4F','#7c3aed'], borderColor:'#141414', borderWidth:3, hoverOffset:6 }] },
+  options:{
+    responsive:true, maintainAspectRatio:false, cutout:'62%',
+    plugins:{
+      legend:{ position:'bottom', labels:{ boxWidth:10, font:{size:10}, usePointStyle:true, pointStyle:'circle' } },
+      centerText:{ text:String(FUENTE_VALUES.reduce((a,b)=>a+b,0)), sub:'registros' },
+      tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10,
+        callbacks:{ label:(ctx)=>{ const total = ctx.dataset.data.reduce((a,b)=>a+b,0); const pct=(ctx.raw/total*100).toFixed(1); return ` ${ctx.label}: ${ctx.raw} (${pct}%)`; } } }
+    }
+  }
+});
+
+new Chart(document.getElementById('chartPaises'), {
+  type:'bar',
+  data:{ labels:COUNTRY_LABELS, datasets:[{ label:'Leads', data:COUNTRY_VALUES, backgroundColor:'#4ade80', borderRadius:6, maxBarThickness:36 }] },
+  options:{
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    layout:{ padding:{ right:70 } },
+    plugins:{
+      legend:{ display:false },
+      valueLabel:{ color:'#ffffff', formatter:(v)=> `${v} leads (100%)` },
+      tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10 }
+    },
+    scales:{
+      x:{ beginAtZero:true, grid:{ color:gridColor }, title:axisTitle('Cantidad de leads') },
+      y:{ grid:{ display:false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('chartGenero'), {
+  type:'doughnut',
+  data:{ labels:['Femenino','Masculino','No especificado'], datasets:[{ data:[GENDER.femenino, GENDER.masculino, GENDER.unknown], backgroundColor:['#7c3aed','#4ade80','#9CA3AF'], borderColor:'#141414', borderWidth:3, hoverOffset:6 }] },
+  options:{
+    responsive:true, maintainAspectRatio:false, cutout:'62%',
+    plugins:{
+      legend:{ position:'bottom', labels:{ boxWidth:10, usePointStyle:true, pointStyle:'circle',
+        generateLabels:(chart)=>{ const d=chart.data; const total=d.datasets[0].data.reduce((a,b)=>a+b,0);
+          return d.labels.map((l,i)=>({ text:`${l} · ${(d.datasets[0].data[i]/total*100).toFixed(1)}%`, fillStyle:d.datasets[0].backgroundColor[i], strokeStyle:d.datasets[0].backgroundColor[i], index:i })); } } },
+      centerText:{ text:String(GENDER.femenino+GENDER.masculino+GENDER.unknown), sub:'leads Meta' },
+      tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10 }
+    }
+  }
+});
+
+new Chart(document.getElementById('chartEdades'), {
+  type:'bar',
+  data:{ labels:AGES.map(a=>a.range), datasets:[{ label:'Leads', data:AGES.map(a=>a.value), backgroundColor:'#4ade80', borderRadius:6, maxBarThickness:40, hoverBackgroundColor:'#86efac' }] },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    layout:{ padding:{ top:26 } },
+    plugins:{
+      legend:{ display:false },
+      valueLabel:{ color:'#ffffff', formatter:(v)=> v>0 ? v : '' },
+      tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10, callbacks:{ label:(ctx)=> ' '+ctx.raw+' leads' } }
+    },
+    scales:{
+      x:{ grid:{ display:false }, title:axisTitle('Rango etario') },
+      y:{ beginAtZero:true, grid:{ color:gridColor }, title:axisTitle('Cantidad de leads'), ticks:{ precision:0 } }
+    }
+  }
+});
+</script>
+</body>
+</html>

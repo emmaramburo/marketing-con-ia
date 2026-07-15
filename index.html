@@ -44,7 +44,28 @@
   main { max-width:1200px; margin:0 auto; padding:20px 24px; }
 
   h1.launch-title { font-size:22px; font-weight:800; margin-bottom:2px; }
-  .launch-sub { color:var(--text2); font-size:13px; margin-bottom:20px; }
+  .launch-sub { color:var(--text2); font-size:13px; margin-bottom:16px; }
+
+  /* Filter bar */
+  .filter-bar {
+    background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:14px 16px; margin-bottom:20px;
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .filter-label { font-size:11.5px; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:0.3px; margin-right:2px; }
+  .preset-btn {
+    background:var(--elem); border:1px solid var(--border); color:var(--text2);
+    font-family:inherit; font-size:12px; font-weight:700; padding:7px 13px; border-radius:8px; cursor:pointer;
+  }
+  .preset-btn:hover { background:#242424; }
+  .preset-btn.active { background:var(--green-dark); border-color:var(--green); color:var(--green-light); }
+  .date-inputs { display:flex; align-items:center; gap:8px; margin-left:6px; }
+  .date-inputs label { font-size:11px; color:var(--text2); font-weight:600; }
+  .date-inputs input[type="date"] {
+    background:var(--elem); border:1px solid var(--border); color:var(--text);
+    font-family:inherit; font-size:12px; padding:6px 9px; border-radius:8px; color-scheme:dark;
+  }
+  .filter-range-info { margin-left:auto; font-size:11.5px; color:var(--green-light); font-weight:700; }
 
   .banner {
     background:linear-gradient(135deg, var(--green-dark), var(--green));
@@ -168,6 +189,7 @@
     .grid-2, .compare-cards, .camp-cards { grid-template-columns:1fr; }
     .stat-row { grid-template-columns:repeat(2,1fr); }
     .winner-cards { grid-template-columns:repeat(2,1fr); }
+    .filter-range-info { margin-left:0; width:100%; }
   }
 </style>
 </head>
@@ -183,7 +205,7 @@
   </div>
   <div class="header-right">
     <span class="badge-status">EN CURSO</span>
-    <span class="updated">Actualizado: 14 jul 2026 &middot; 23:01 UTC</span>
+    <span class="updated">Actualizado: 15 jul 2026 &middot; 14:34 UTC</span>
   </div>
 </header>
 
@@ -191,25 +213,22 @@
   <h1 class="launch-title">Marketing con IA &mdash; Fernanda Rivera</h1>
   <p class="launch-sub">Per&iacute;odo de lanzamiento: 13 jul &ndash; 2 ago 2026 &middot; Captaci&oacute;n org&aacute;nica desde el 10 jul &middot; Cuenta Meta: Fernanda Rivera (104680897, ARS) &middot; Campa&ntilde;as filtradas por "L10726"</p>
 
-  <div class="banner">
-    <div class="item"><div class="val">$79.493</div><div class="lbl">Inversi&oacute;n Ads (ARS)</div></div>
-    <div class="item"><div class="val">88</div><div class="lbl">Leads Meta</div><div class="sub">CPL $903 ARS</div></div>
-    <div class="item"><div class="val">0</div><div class="lbl">Ventas cerradas</div><div class="sub">a&uacute;n sin etapa de venta</div></div>
-    <div class="item"><div class="val">$0</div><div class="lbl">Facturaci&oacute;n total</div><div class="sub">pendiente</div></div>
-    <div class="item"><div class="val">&mdash;</div><div class="lbl">ROAS total</div><div class="sub">pendiente</div></div>
+  <div class="filter-bar">
+    <span class="filter-label">Rango de fechas</span>
+    <button class="preset-btn" data-preset="all">Todo el lanzamiento</button>
+    <button class="preset-btn" data-preset="week">&Uacute;ltimos 7 d&iacute;as</button>
+    <button class="preset-btn" data-preset="today">Hoy</button>
+    <div class="date-inputs">
+      <label for="dateFrom">Desde</label>
+      <input type="date" id="dateFrom">
+      <label for="dateTo">Hasta</label>
+      <input type="date" id="dateTo">
+    </div>
+    <span class="filter-range-info" id="filterRangeInfo"></span>
   </div>
 
-  <div class="kpi-grid">
-    <div class="kpi acc-green"><div class="lbl">Gasto Cta. Principal</div><div class="val">$79.492,67</div><div class="note">ARS &middot; 2 campa&ntilde;as L10726</div></div>
-    <div class="kpi acc-green"><div class="lbl">CPL promedio (Meta)</div><div class="val">$903,33</div><div class="note">ARS por lead (Meta)</div></div>
-    <div class="kpi acc-white"><div class="lbl">Leads Cta. Principal</div><div class="val">88</div><div class="note">Website leads (Meta p&iacute;xel)</div></div>
-    <div class="kpi acc-white"><div class="lbl">Registros CRM (total)</div><div class="val">145</div><div class="note">82 pagados + 63 org&aacute;nicos</div></div>
-    <div class="kpi acc-amber"><div class="lbl">Costo por Registro CRM</div><div class="val">$969,42</div><div class="note">solo tr&aacute;fico pagado (82 registros)</div></div>
-    <div class="kpi pending acc-amber"><div class="lbl">Ventas</div><div class="val">Pendiente</div><div class="note">se activa al vender</div></div>
-    <div class="kpi pending acc-amber"><div class="lbl">Facturaci&oacute;n total</div><div class="val">Pendiente</div><div class="note">se activa al vender</div></div>
-    <div class="kpi pending acc-gold"><div class="lbl">ROAS total</div><div class="val">Pendiente</div><div class="note">facturaci&oacute;n / gasto</div></div>
-    <div class="kpi pending acc-gold"><div class="lbl">ROAS Hotmart</div><div class="val">Pendiente</div><div class="note">solo trackeable</div></div>
-  </div>
+  <div class="banner" id="bannerWrap"></div>
+  <div class="kpi-grid" id="kpiGrid"></div>
 
   <div class="tabs">
     <button class="tab-btn active" data-tab="ads">Ads</button>
@@ -233,29 +252,14 @@
     </div>
 
     <div class="card">
-      <h3>Top 5 anuncios ganadores <span class="tag">ordenados por menor CPL CRM</span></h3>
+      <h3>Top 5 anuncios ganadores <span class="tag">ordenados por menor CPL CRM &middot; seg&uacute;n rango seleccionado</span></h3>
       <div class="winner-cards" id="winnerCards"></div>
       <div class="note-box"><b>Nota:</b> el CPL CRM se calcul&oacute; cruzando el <code>utm_content</code>/<code>utm_campaign</code> de cada registro en la base de datos con el anuncio (ad) correspondiente en Meta. Cuando CPL Meta y CPL CRM coinciden, todos los leads reportados por el p&iacute;xel llegaron a registrarse en el CRM.</div>
     </div>
 
     <div class="card">
       <h3>Campa&ntilde;as &mdash; detalle</h3>
-      <div class="camp-cards">
-        <div class="camp-card">
-          <div class="name">EA-CAPTACION-TF-L10726-TEST &middot; Copia <span class="chip best">Mejor CPL</span></div>
-          <div class="row"><span>Leads</span><b>82</b></div>
-          <div class="row"><span>CPL</span><b>$835,63 ARS</b></div>
-          <div class="row"><span>% del total</span><b>93,2%</b></div>
-          <div class="row"><span>Gasto</span><b>$68.521,49 ARS</b></div>
-        </div>
-        <div class="camp-card">
-          <div class="name">EA-CAPTACION-TF-L10726-TEST <span class="chip worst">CPL m&aacute;s alto</span></div>
-          <div class="row"><span>Leads</span><b>6</b></div>
-          <div class="row"><span>CPL</span><b>$1.828,53 ARS</b></div>
-          <div class="row"><span>% del total</span><b>6,8%</b></div>
-          <div class="row"><span>Gasto</span><b>$10.971,18 ARS</b></div>
-        </div>
-      </div>
+      <div class="camp-cards" id="campCards"></div>
       <div class="note-box"><b>Nota:</b> ambas campa&ntilde;as comparten el mismo nombre en el Administrador de Anuncios (ambas "EA-CAPTACION-TF-L10726-TEST"). Se distinguieron por ID y se reconciliaron contra los UTM de la base de registros (una usa el UTM "...-TEST" y la otra "...-TEST - Copia").</div>
     </div>
   </div>
@@ -272,16 +276,7 @@
   <div class="tab-panel" id="tab-campanas">
     <div class="acc-border-green">
       <h3 style="margin-bottom:12px;">Cuenta principal &mdash; Fernanda Rivera (104680897, ARS)</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Campa&ntilde;a</th><th>Gasto (ARS)</th><th>Leads</th><th>CPL (ARS)</th><th>Impresiones</th><th>Alcance</th><th>Tipo</th></tr></thead>
-          <tbody>
-            <tr><td>EA-CAPTACION-TF-L10726-TEST &middot; Copia (ID 6968688430281)</td><td>$68.521,49</td><td>82</td><td>$835,63</td><td>8.720</td><td>6.008</td><td>Captaci&oacute;n</td></tr>
-            <tr><td>EA-CAPTACION-TF-L10726-TEST (ID 6967166854481)</td><td>$10.971,18</td><td>6</td><td>$1.828,53</td><td>837</td><td>789</td><td>Captaci&oacute;n</td></tr>
-            <tr class="total-row"><td>Total</td><td>$79.492,67</td><td>88</td><td>$903,33</td><td>9.557</td><td>6.797</td><td>&mdash;</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="table-wrap"><table id="campTable"></table></div>
     </div>
   </div>
 
@@ -293,17 +288,8 @@
       <div class="note-box"><b>Nota:</b> "Registros CRM" incluye tr&aacute;fico org&aacute;nico (Instagram, WhatsApp) adem&aacute;s del pago v&iacute;a Meta, por eso su valor puede superar a "Leads Meta" &mdash; no es una ca&iacute;da del embudo, son fuentes adicionales sumadas.</div>
     </div>
 
-    <div class="compare-cards">
-      <div class="compare-card meta"><div class="lbl">CPL Meta (reportado)</div><div class="val">$903 ARS</div></div>
-      <div class="compare-card crm"><div class="lbl">CPL CRM (registros pagados reales)</div><div class="val">$969 ARS</div></div>
-    </div>
-
-    <div class="stat-row">
-      <div class="stat-box"><div class="val">145</div><div class="lbl">Registros CRM totales</div></div>
-      <div class="stat-box" style="border-color:var(--green);"><div class="val">82</div><div class="lbl">Registros CRM &mdash; pagado (L10726)</div><div class="note" style="margin-top:4px;">$969,42 ARS / registro</div></div>
-      <div class="stat-box" style="border-color:var(--violet);"><div class="val">63</div><div class="lbl">Registros CRM &mdash; org&aacute;nico (IG / WhatsApp)</div><div class="note" style="margin-top:4px;">$0 &mdash; sin costo de medios</div></div>
-      <div class="stat-box"><div class="val">10&ndash;14 jul</div><div class="lbl">Rango de datos disponible</div></div>
-    </div>
+    <div class="compare-cards" id="compareCards"></div>
+    <div class="stat-row" id="statRow"></div>
 
     <div class="grid-2">
       <div class="card">
@@ -318,13 +304,8 @@
 
     <div class="card">
       <h3>Detalle diario</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Fecha</th><th>Gasto Meta</th><th>Leads Meta</th><th>CPL Meta</th><th>Registros CRM (total)</th><th>Pagados</th><th>Org&aacute;nicos</th><th>CPL CRM</th></tr></thead>
-          <tbody id="dailyTableBody"></tbody>
-        </table>
-      </div>
-      <div class="note-box"><b>Nota:</b> el CPL CRM del d&iacute;a m&aacute;s reciente (14 jul) suele verse m&aacute;s bajo de lo esperado porque Meta tarda entre 24 y 48&nbsp;h en reflejar todos los leads del d&iacute;a en curso: conviene mirar los acumulados en vez del CPL de un solo d&iacute;a reci&eacute;n cerrado.</div>
+      <div class="table-wrap"><table id="dailyTable"></table></div>
+      <div class="note-box"><b>Nota:</b> el CPL CRM del d&iacute;a m&aacute;s reciente suele verse m&aacute;s bajo de lo esperado porque Meta tarda entre 24 y 48&nbsp;h en reflejar todos los leads del d&iacute;a en curso: conviene mirar los acumulados en vez del CPL de un solo d&iacute;a reci&eacute;n cerrado.</div>
     </div>
   </div>
 
@@ -334,7 +315,7 @@
       <div class="card">
         <h3>Pa&iacute;ses de leads (Meta)</h3>
         <div class="chart-wrap"><canvas id="chartPaises"></canvas></div>
-        <ul class="country-list"><li><span><span class="flag">&#127462;&#127479;</span>Argentina</span><span>88 leads &middot; 100%</span></li></ul>
+        <ul class="country-list" id="countryList"></ul>
       </div>
       <div class="card">
         <h3>G&eacute;nero</h3>
@@ -344,136 +325,393 @@
     <div class="card">
       <h3>Edades (leads por rango)</h3>
       <div class="chart-wrap"><canvas id="chartEdades"></canvas></div>
-      <div class="age-chip-row">
-        <div class="age-chip">18-24 &middot; <b>5</b> leads</div>
-        <div class="age-chip">25-34 &middot; <b>14</b> leads</div>
-        <div class="age-chip">35-44 &middot; <b>19</b> leads</div>
-        <div class="age-chip">45-54 &middot; <b>28</b> leads</div>
-        <div class="age-chip">55-64 &middot; <b>15</b> leads</div>
-        <div class="age-chip">65+ &middot; <b>7</b> leads</div>
-      </div>
+      <div class="age-chip-row" id="ageChips"></div>
     </div>
   </div>
 
 </main>
 
-<footer>Panel V&eacute;rtice &middot; Generado con datos en vivo de Meta Ads (API) y la base de datos Supabase del proyecto "AI Masterclass Launch" (Lovable) &middot; &Uacute;ltima actualizaci&oacute;n: 14 jul 2026, 23:01 UTC</footer>
+<footer>Panel V&eacute;rtice &middot; Generado con datos en vivo de Meta Ads (API) y la base de datos Supabase del proyecto "AI Masterclass Launch" (Lovable) &middot; &Uacute;ltima actualizaci&oacute;n: 15 jul 2026, 14:34 UTC</footer>
 
 <script>
-// ---------- DATA ----------
-const DAILY_LABELS = ["10 Jul","11 Jul","12 Jul","13 Jul","14 Jul"];
-const DAILY_SPEND_META = [0,0,0,62702.04,16790.63];
-const DAILY_LEADS_META = [0,0,0,62,26];
-const DAILY_CPL_META = [null,null,null,1011.32,645.79];
-const DAILY_CRM_TOTAL = [7,28,2,57,51];
-const DAILY_CRM_PAID = [0,0,0,39,43];
-const DAILY_CRM_ORGANIC = [7,28,2,18,8];
+// ================== RAW DAILY DATASETS ==================
+const DAYS = ["2026-07-10","2026-07-11","2026-07-12","2026-07-13","2026-07-14","2026-07-15"];
+const DAY_LABEL = { "2026-07-10":"10 Jul", "2026-07-11":"11 Jul", "2026-07-12":"12 Jul", "2026-07-13":"13 Jul", "2026-07-14":"14 Jul", "2026-07-15":"15 Jul" };
 
-const FUNNEL = [
-  { label:"Inversión (ARS)", value:79492.67, display:"$79.493" },
-  { label:"Impresiones", value:9557, display:"9.557" },
-  { label:"Alcance", value:6797, display:"6.797" },
-  { label:"Leads Meta", value:88, display:"88" },
-  { label:"Registros CRM", value:145, display:"145" },
-  { label:"Ventas", value:0, display:"0 (pendiente)" },
+const CAMPAIGN_DAILY = [
+  { day:"2026-07-13", campaign:"Copia", spend:51771.32, impr:6431, reach:5038, leads:56 },
+  { day:"2026-07-14", campaign:"Copia", spend:31474.40, impr:4643, reach:3651, leads:57 },
+  { day:"2026-07-15", campaign:"Copia", spend:15626.58, impr:2257, reach:1985, leads:23 },
+  { day:"2026-07-13", campaign:"TEST",  spend:10971.18, impr:837,  reach:789,  leads:6  },
 ];
 
-// Top 5 anuncios ganadores — cruce Meta (ad-level) x CRM (utm_content/utm_campaign), ordenado por menor CPL CRM
-const WINNER_ADS = [
-  { rank:1, name:"AD4", campaign:"TEST", spend:743.84, impressions:57, metaLeads:3, crmLeads:3 },
-  { rank:2, name:"AD3", campaign:"Copia", spend:10358.45, impressions:1360, metaLeads:21, crmLeads:20 },
-  { rank:3, name:"AD7", campaign:"Copia", spend:9793.75, impressions:1200, metaLeads:15, crmLeads:14 },
-  { rank:4, name:"AD2", campaign:"Copia", spend:9103.83, impressions:1563, metaLeads:14, crmLeads:13 },
-  { rank:5, name:"AD2", campaign:"TEST", spend:849.12, impressions:88, metaLeads:1, crmLeads:1 },
+const AD_DAILY = [
+  { day:"2026-07-13", campaign:"Copia", ad:"AD2", spend:7486.06, impr:1304, leads:10 },
+  { day:"2026-07-14", campaign:"Copia", ad:"AD2", spend:3908.21, impr:716,  leads:17 },
+  { day:"2026-07-15", campaign:"Copia", ad:"AD2", spend:2913.29, impr:559,  leads:6  },
+  { day:"2026-07-13", campaign:"Copia", ad:"AD6", spend:7812.96, impr:1112, leads:7  },
+  { day:"2026-07-14", campaign:"Copia", ad:"AD6", spend:4548.91, impr:505,  leads:7  },
+  { day:"2026-07-15", campaign:"Copia", ad:"AD6", spend:2098.29, impr:206,  leads:5  },
+  { day:"2026-07-13", campaign:"Copia", ad:"AD7", spend:7188.87, impr:855,  leads:12 },
+  { day:"2026-07-14", campaign:"Copia", ad:"AD7", spend:4589.20, impr:628,  leads:7  },
+  { day:"2026-07-15", campaign:"Copia", ad:"AD7", spend:2050.81, impr:248,  leads:1  },
+  { day:"2026-07-13", campaign:"Copia", ad:"AD1", spend:7635.27, impr:928,  leads:6  },
+  { day:"2026-07-14", campaign:"Copia", ad:"AD1", spend:4203.56, impr:582,  leads:5  },
+  { day:"2026-07-15", campaign:"Copia", ad:"AD1", spend:2288.89, impr:300,  leads:1  },
+  { day:"2026-07-13", campaign:"Copia", ad:"AD5", spend:6478.94, impr:675,  leads:3  },
+  { day:"2026-07-14", campaign:"Copia", ad:"AD5", spend:4619.64, impr:741,  leads:4  },
+  { day:"2026-07-15", campaign:"Copia", ad:"AD5", spend:2110.30, impr:256,  leads:2  },
+  { day:"2026-07-13", campaign:"Copia", ad:"AD4", spend:7601.66, impr:641,  leads:2  },
+  { day:"2026-07-14", campaign:"Copia", ad:"AD4", spend:4819.98, impr:652,  leads:8  },
+  { day:"2026-07-15", campaign:"Copia", ad:"AD4", spend:1980.95, impr:303,  leads:0  },
+  { day:"2026-07-13", campaign:"Copia", ad:"AD3", spend:7567.56, impr:916,  leads:16 },
+  { day:"2026-07-14", campaign:"Copia", ad:"AD3", spend:4784.90, impr:819,  leads:9  },
+  { day:"2026-07-15", campaign:"Copia", ad:"AD3", spend:2250.84, impr:385,  leads:8  },
+  { day:"2026-07-13", campaign:"TEST",  ad:"AD1", spend:1509.90, impr:118,  leads:0  },
+  { day:"2026-07-13", campaign:"TEST",  ad:"AD3", spend:3584.48, impr:267,  leads:2  },
+  { day:"2026-07-13", campaign:"TEST",  ad:"AD2", spend:849.12,  impr:88,   leads:1  },
+  { day:"2026-07-13", campaign:"TEST",  ad:"AD4", spend:743.84,  impr:57,   leads:3  },
+  { day:"2026-07-13", campaign:"TEST",  ad:"AD5", spend:2197.33, impr:137,  leads:0  },
+  { day:"2026-07-13", campaign:"TEST",  ad:"AD6", spend:968.85,  impr:75,   leads:0  },
+  { day:"2026-07-13", campaign:"TEST",  ad:"AD7", spend:1117.66, impr:95,   leads:0  },
 ];
 
-const FUENTE_LABELS = ["Instagram (orgánico)","WhatsApp (orgánico)","Directo/sin UTM","Instagram (pago)","Facebook (pago)"];
-// Instagram orgánico: 7(10jul)+9(11jul)+8(13jul)+6(14jul)=30 · WhatsApp orgánico: 19(11jul)+2(12jul)+7(13jul)=28
-// Directo/sin UTM: 3(13jul)+2(14jul)=5 · Instagram pago: 30(13jul)+37(14jul)=67 · Facebook pago: 9(13jul)+6(14jul)=15 · Total=145
-const FUENTE_VALUES = [30, 28, 5, 67, 15];
-
-const COUNTRY_LABELS = ["Argentina"];
-const COUNTRY_VALUES = [88];
-
-const GENDER = { femenino:82, masculino:6, unknown:0 };
-const AGES = [
-  { range:"18-24", value:5 },
-  { range:"25-34", value:14 },
-  { range:"35-44", value:19 },
-  { range:"45-54", value:28 },
-  { range:"55-64", value:15 },
-  { range:"65+", value:7 },
+const AGE_DAILY = [
+  { day:"2026-07-13", campaign:"Copia", age:"45-54", leads:20 },
+  { day:"2026-07-13", campaign:"Copia", age:"55-64", leads:7 },
+  { day:"2026-07-13", campaign:"Copia", age:"65+",   leads:3 },
+  { day:"2026-07-13", campaign:"Copia", age:"35-44", leads:14 },
+  { day:"2026-07-13", campaign:"Copia", age:"25-34", leads:8 },
+  { day:"2026-07-13", campaign:"Copia", age:"18-24", leads:4 },
+  { day:"2026-07-14", campaign:"Copia", age:"55-64", leads:11 },
+  { day:"2026-07-14", campaign:"Copia", age:"45-54", leads:13 },
+  { day:"2026-07-14", campaign:"Copia", age:"35-44", leads:16 },
+  { day:"2026-07-14", campaign:"Copia", age:"25-34", leads:12 },
+  { day:"2026-07-14", campaign:"Copia", age:"18-24", leads:1 },
+  { day:"2026-07-14", campaign:"Copia", age:"65+",   leads:4 },
+  { day:"2026-07-15", campaign:"Copia", age:"55-64", leads:7 },
+  { day:"2026-07-15", campaign:"Copia", age:"45-54", leads:5 },
+  { day:"2026-07-15", campaign:"Copia", age:"35-44", leads:7 },
+  { day:"2026-07-15", campaign:"Copia", age:"25-34", leads:3 },
+  { day:"2026-07-15", campaign:"Copia", age:"18-24", leads:0 },
+  { day:"2026-07-15", campaign:"Copia", age:"65+",   leads:1 },
+  { day:"2026-07-13", campaign:"TEST",  age:"25-34", leads:1 },
+  { day:"2026-07-13", campaign:"TEST",  age:"65+",   leads:0 },
+  { day:"2026-07-13", campaign:"TEST",  age:"55-64", leads:2 },
+  { day:"2026-07-13", campaign:"TEST",  age:"45-54", leads:2 },
+  { day:"2026-07-13", campaign:"TEST",  age:"35-44", leads:0 },
+  { day:"2026-07-13", campaign:"TEST",  age:"18-24", leads:1 },
 ];
 
-// ---------- TABS ----------
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+const GENDER_DAILY = [
+  { day:"2026-07-13", campaign:"Copia", gender:"female",  leads:52 },
+  { day:"2026-07-13", campaign:"Copia", gender:"male",    leads:4 },
+  { day:"2026-07-13", campaign:"Copia", gender:"unknown", leads:0 },
+  { day:"2026-07-14", campaign:"Copia", gender:"female",  leads:51 },
+  { day:"2026-07-14", campaign:"Copia", gender:"male",    leads:4 },
+  { day:"2026-07-14", campaign:"Copia", gender:"unknown", leads:2 },
+  { day:"2026-07-15", campaign:"Copia", gender:"female",  leads:22 },
+  { day:"2026-07-15", campaign:"Copia", gender:"male",    leads:1 },
+  { day:"2026-07-15", campaign:"Copia", gender:"unknown", leads:0 },
+  { day:"2026-07-13", campaign:"TEST",  gender:"female",  leads:5 },
+  { day:"2026-07-13", campaign:"TEST",  gender:"male",    leads:1 },
+  { day:"2026-07-13", campaign:"TEST",  gender:"unknown", leads:0 },
+];
+
+// Cada fila = un grupo de registros del CRM (base Supabase del proyecto AI Masterclass Launch)
+const CRM_ROWS = [
+  { day:"2026-07-10", medium:"organic_social", source:"instagram", campaign:null, content:null, leads:7 },
+  { day:"2026-07-11", medium:"whatsapp", source:"whatsapp", campaign:null, content:null, leads:19 },
+  { day:"2026-07-11", medium:"organic_social", source:"instagram", campaign:null, content:null, leads:9 },
+  { day:"2026-07-12", medium:"whatsapp", source:"whatsapp", campaign:null, content:null, leads:2 },
+  { day:"2026-07-13", medium:"paid_social", source:"ig", campaign:"Copia", content:"C3", leads:9 },
+  { day:"2026-07-13", medium:"paid_social", source:"ig", campaign:"Copia", content:"C7", leads:9 },
+  { day:"2026-07-13", medium:"organic_social", source:"instagram", campaign:null, content:null, leads:8 },
+  { day:"2026-07-13", medium:"whatsapp", source:"whatsapp", campaign:null, content:null, leads:7 },
+  { day:"2026-07-13", medium:"paid_social", source:"ig", campaign:"Copia", content:"C2", leads:4 },
+  { day:"2026-07-13", medium:null, source:null, campaign:null, content:null, leads:3 },
+  { day:"2026-07-13", medium:"paid_social", source:"fb", campaign:"Copia", content:"C3", leads:3 },
+  { day:"2026-07-13", medium:"paid_social", source:"fb", campaign:"Copia", content:"C6", leads:2 },
+  { day:"2026-07-13", medium:"paid_social", source:"ig", campaign:"Copia", content:"C6", leads:2 },
+  { day:"2026-07-13", medium:"paid_social", source:"ig", campaign:"Copia", content:"C4", leads:2 },
+  { day:"2026-07-13", medium:"paid_social", source:"fb", campaign:"TEST",  content:"C4", leads:2 },
+  { day:"2026-07-13", medium:"paid_social", source:"ig", campaign:"Copia", content:"C1", leads:1 },
+  { day:"2026-07-13", medium:"paid_social", source:"ig", campaign:"TEST",  content:"C2", leads:1 },
+  { day:"2026-07-13", medium:"paid_social", source:"fb", campaign:"Copia", content:"C2", leads:1 },
+  { day:"2026-07-13", medium:"paid_social", source:"ig", campaign:"TEST",  content:"C4", leads:1 },
+  { day:"2026-07-13", medium:"paid_social", source:"fb", campaign:"TEST",  content:"C3", leads:1 },
+  { day:"2026-07-13", medium:"paid_social", source:"ig", campaign:"TEST",  content:"C3", leads:1 },
+  { day:"2026-07-14", medium:"paid_social", source:"ig", campaign:"Copia", content:"C2", leads:8 },
+  { day:"2026-07-14", medium:"paid_social", source:"ig", campaign:"Copia", content:"C3", leads:7 },
+  { day:"2026-07-14", medium:"paid_social", source:"ig", campaign:"Copia", content:"C1", leads:7 },
+  { day:"2026-07-14", medium:"paid_social", source:"ig", campaign:"Copia", content:"C7", leads:6 },
+  { day:"2026-07-14", medium:"organic_social", source:"instagram", campaign:null, content:null, leads:6 },
+  { day:"2026-07-14", medium:"paid_social", source:"ig", campaign:"Copia", content:"C4", leads:5 },
+  { day:"2026-07-14", medium:"paid_social", source:"ig", campaign:"Copia", content:"C5", leads:4 },
+  { day:"2026-07-14", medium:"paid_social", source:"ig", campaign:"Copia", content:"C6", leads:3 },
+  { day:"2026-07-14", medium:"paid_social", source:"fb", campaign:"Copia", content:"C5", leads:3 },
+  { day:"2026-07-14", medium:null, source:null, campaign:null, content:null, leads:2 },
+  { day:"2026-07-14", medium:"paid_social", source:"fb", campaign:"Copia", content:"C6", leads:1 },
+  { day:"2026-07-14", medium:"paid_social", source:"fb", campaign:"Copia", content:"C2", leads:1 },
+  { day:"2026-07-14", medium:"paid_social", source:"fb", campaign:"Copia", content:"C3", leads:1 },
+  { day:"2026-07-15", medium:"paid_social", source:"ig", campaign:"Copia", content:"C2", leads:13 },
+  { day:"2026-07-15", medium:"paid_social", source:"ig", campaign:"Copia", content:"C3", leads:8 },
+  { day:"2026-07-15", medium:"paid_social", source:"ig", campaign:"Copia", content:"C6", leads:6 },
+  { day:"2026-07-15", medium:"organic_social", source:"instagram", campaign:null, content:null, leads:6 },
+  { day:"2026-07-15", medium:"paid_social", source:"ig", campaign:"Copia", content:"C7", leads:4 },
+  { day:"2026-07-15", medium:"paid_social", source:"ig", campaign:"Copia", content:"C1", leads:3 },
+  { day:"2026-07-15", medium:"paid_social", source:"fb", campaign:"Copia", content:"C3", leads:3 },
+  { day:"2026-07-15", medium:"paid_social", source:"ig", campaign:"Copia", content:"C5", leads:2 },
+  { day:"2026-07-15", medium:"paid_social", source:null, campaign:null, content:null, leads:1 },
+  { day:"2026-07-15", medium:"paid_social", source:"fb", campaign:"Copia", content:"C2", leads:1 },
+  { day:"2026-07-15", medium:"paid_social", source:"fb", campaign:"Copia", content:"C6", leads:1 },
+  { day:"2026-07-15", medium:"paid_social", source:"ig", campaign:"Copia", content:"C4", leads:1 },
+];
+
+// ================== HELPERS ==================
+function fmtARS(v) { return '$' + Number(v).toLocaleString('es-AR', { maximumFractionDigits: 0 }); }
+function fmtARS2(v) { return '$' + Number(v).toLocaleString('es-AR', { minimumFractionDigits: 2 }); }
+function esc(s){ return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+// ================== AGGREGATION ==================
+function aggregate(selDays) {
+  const sel = new Set(selDays);
+
+  const campTotals = {};
+  CAMPAIGN_DAILY.filter(r => sel.has(r.day)).forEach(r => {
+    campTotals[r.campaign] = campTotals[r.campaign] || { spend:0, impr:0, reach:0, leads:0 };
+    campTotals[r.campaign].spend += r.spend;
+    campTotals[r.campaign].impr  += r.impr;
+    campTotals[r.campaign].reach += r.reach;
+    campTotals[r.campaign].leads += r.leads;
   });
-});
+  const totalSpend = Object.values(campTotals).reduce((a,c)=>a+c.spend,0);
+  const totalLeadsMeta = Object.values(campTotals).reduce((a,c)=>a+c.leads,0);
+  const totalImpr = Object.values(campTotals).reduce((a,c)=>a+c.impr,0);
+  const totalReach = Object.values(campTotals).reduce((a,c)=>a+c.reach,0);
 
-// ---------- FUNNEL ----------
-const funnelWrap = document.getElementById('funnelWrap');
-const maxVal = Math.max(...FUNNEL.map(f => f.value));
-FUNNEL.forEach(step => {
-  const pct = maxVal > 0 ? Math.max((step.value / maxVal) * 100, 4) : 4;
-  const el = document.createElement('div');
-  el.className = 'funnel-step';
-  el.innerHTML = `<div class="funnel-label">${step.label}</div>
-    <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:${pct}%"></div></div>
-    <div class="funnel-val">${step.display}</div>`;
-  funnelWrap.appendChild(el);
-});
+  const adMeta = {};
+  AD_DAILY.filter(r => sel.has(r.day)).forEach(r => {
+    const key = r.campaign + '|' + r.ad;
+    adMeta[key] = adMeta[key] || { campaign:r.campaign, ad:r.ad, spend:0, impr:0, leads:0 };
+    adMeta[key].spend += r.spend; adMeta[key].impr += r.impr; adMeta[key].leads += r.leads;
+  });
 
-// ---------- TOP 5 ANUNCIOS GANADORES ----------
-const winnerWrap = document.getElementById('winnerCards');
-WINNER_ADS.forEach(ad => {
-  const cplMeta = ad.metaLeads > 0 ? (ad.spend/ad.metaLeads) : null;
-  const cplCrm = ad.crmLeads > 0 ? (ad.spend/ad.crmLeads) : null;
-  const el = document.createElement('div');
-  el.className = 'winner-card' + (ad.rank === 1 ? ' rank1' : '');
-  el.innerHTML = `<div class="rank">#${ad.rank}</div>
-    <div class="name">${ad.name} <span class="tag" style="font-size:9.5px;">(${ad.campaign})</span></div>
-    <div class="metric-row highlight"><span>CPL CRM</span><b>${cplCrm? '$'+cplCrm.toLocaleString('es-AR',{maximumFractionDigits:0}) : '—'}</b></div>
-    <div class="metric-row"><span>CPL Meta</span><b>${cplMeta? '$'+cplMeta.toLocaleString('es-AR',{maximumFractionDigits:0}) : '—'}</b></div>
-    <div class="metric-row"><span>Impresiones</span><b>${ad.impressions.toLocaleString('es-AR')}</b></div>
-    <div class="metric-row"><span>Gasto</span><b>$${ad.spend.toLocaleString('es-AR',{minimumFractionDigits:2})}</b></div>`;
-  winnerWrap.appendChild(el);
-});
+  const crmRows = CRM_ROWS.filter(r => sel.has(r.day));
+  const crmTotal = crmRows.reduce((a,r)=>a+r.leads,0);
+  const crmPaid = crmRows.filter(r=>r.medium==='paid_social').reduce((a,r)=>a+r.leads,0);
+  const crmOrganic = crmTotal - crmPaid;
 
-// ---------- DAILY TABLE ----------
-const tbody = document.getElementById('dailyTableBody');
-let totalSpend=0, totalLeadsMeta=0, totalCRM=0, totalPaid=0, totalOrganic=0;
-DAILY_LABELS.forEach((label, i) => {
-  const spend = DAILY_SPEND_META[i], leads = DAILY_LEADS_META[i];
-  const cpl = DAILY_CPL_META[i];
-  const crmTotal = DAILY_CRM_TOTAL[i], paid = DAILY_CRM_PAID[i], organic = DAILY_CRM_ORGANIC[i];
-  const cplCrm = paid > 0 ? (spend/paid) : null;
-  totalSpend+=spend; totalLeadsMeta+=leads; totalCRM+=crmTotal; totalPaid+=paid; totalOrganic+=organic;
-  const tr = document.createElement('tr');
-  tr.innerHTML = `<td>${label}</td><td>${spend? '$'+spend.toLocaleString('es-AR',{minimumFractionDigits:2}) : '—'}</td>
-    <td>${leads||'—'}</td><td>${cpl? '$'+cpl.toLocaleString('es-AR',{minimumFractionDigits:2}) : '—'}</td>
-    <td>${crmTotal}</td><td>${paid||'—'}</td><td>${organic}</td>
-    <td>${cplCrm? '$'+cplCrm.toLocaleString('es-AR',{minimumFractionDigits:2}) : '—'}</td>`;
-  tbody.appendChild(tr);
-});
-const trTotal = document.createElement('tr');
-trTotal.className = 'total-row';
-trTotal.innerHTML = `<td>Total</td><td>$${totalSpend.toLocaleString('es-AR',{minimumFractionDigits:2})}</td>
-  <td>${totalLeadsMeta}</td><td>$${(totalSpend/totalLeadsMeta).toLocaleString('es-AR',{minimumFractionDigits:2})}</td>
-  <td>${totalCRM}</td><td>${totalPaid}</td><td>${totalOrganic}</td>
-  <td>$${(totalSpend/totalPaid).toLocaleString('es-AR',{minimumFractionDigits:2})}</td>`;
-tbody.appendChild(trTotal);
+  const crmByAd = {};
+  crmRows.filter(r=>r.medium==='paid_social' && r.content).forEach(r=>{
+    const m = r.content.match(/C(\d+)$/i);
+    if (!m) return;
+    const key = r.campaign + '|AD' + m[1];
+    crmByAd[key] = (crmByAd[key]||0) + r.leads;
+  });
 
-// ---------- CHARTS ----------
+  const winners = Object.values(adMeta).map(a=>{
+    const key = a.campaign+'|'+a.ad;
+    const crmLeads = crmByAd[key] || 0;
+    return {
+      name:a.ad, campaign:a.campaign, spend:a.spend, impressions:a.impr, metaLeads:a.leads, crmLeads,
+      cplMeta: a.leads>0 ? a.spend/a.leads : null,
+      cplCrm: crmLeads>0 ? a.spend/crmLeads : null,
+    };
+  }).filter(w=>w.cplCrm!==null).sort((a,b)=>a.cplCrm-b.cplCrm).slice(0,5);
+
+  const ageAgg = {};
+  AGE_DAILY.filter(r=>sel.has(r.day)).forEach(r=>{ ageAgg[r.age]=(ageAgg[r.age]||0)+r.leads; });
+  const ageOrder = ["18-24","25-34","35-44","45-54","55-64","65+"];
+  const ages = ageOrder.map(r=>({range:r, value:ageAgg[r]||0}));
+
+  const genderAgg = { femenino:0, masculino:0, unknown:0 };
+  GENDER_DAILY.filter(r=>sel.has(r.day)).forEach(r=>{
+    if (r.gender==='female') genderAgg.femenino += r.leads;
+    else if (r.gender==='male') genderAgg.masculino += r.leads;
+    else genderAgg.unknown += r.leads;
+  });
+
+  const fuente = { igOrg:0, waOrg:0, directo:0, igPago:0, fbPago:0 };
+  crmRows.forEach(r=>{
+    if (r.medium==='organic_social' && r.source==='instagram') fuente.igOrg += r.leads;
+    else if (r.medium==='whatsapp') fuente.waOrg += r.leads;
+    else if (r.medium==='paid_social' && r.source==='ig') fuente.igPago += r.leads;
+    else if (r.medium==='paid_social' && r.source==='fb') fuente.fbPago += r.leads;
+    else fuente.directo += r.leads;
+  });
+
+  return { campTotals, totalSpend, totalLeadsMeta, totalImpr, totalReach, crmTotal, crmPaid, crmOrganic, winners, ages, genderAgg, fuente };
+}
+
+// ================== RENDER ==================
+let charts = [];
+function destroyCharts(){ charts.forEach(c=>c.destroy()); charts=[]; }
+
+function renderAll(selDays) {
+  const A = aggregate(selDays);
+  renderFilterInfo(selDays);
+  renderBanner(A);
+  renderKpis(A);
+  renderWinners(A.winners);
+  renderCampCards(A);
+  renderCampTable(A);
+  renderFunnel(A);
+  renderCompare(A);
+  renderStatRow(A, selDays);
+  renderDailyTable(selDays);
+  renderAudiencia(A);
+  renderCharts(selDays, A);
+}
+
+function renderFilterInfo(selDays) {
+  const el = document.getElementById('filterRangeInfo');
+  if (selDays.length === 0) { el.textContent = 'Sin días seleccionados'; return; }
+  el.textContent = selDays.length + (selDays.length===1 ? ' día seleccionado' : ' días seleccionados');
+}
+
+function renderBanner(A) {
+  const cpl = A.totalLeadsMeta>0 ? A.totalSpend/A.totalLeadsMeta : null;
+  document.getElementById('bannerWrap').innerHTML = `
+    <div class="item"><div class="val">${fmtARS(A.totalSpend)}</div><div class="lbl">Inversi&oacute;n Ads (ARS)</div></div>
+    <div class="item"><div class="val">${A.totalLeadsMeta}</div><div class="lbl">Leads Meta</div><div class="sub">${cpl?('CPL '+fmtARS(cpl)+' ARS'):'&mdash;'}</div></div>
+    <div class="item"><div class="val">0</div><div class="lbl">Ventas cerradas</div><div class="sub">a&uacute;n sin etapa de venta</div></div>
+    <div class="item"><div class="val">$0</div><div class="lbl">Facturaci&oacute;n total</div><div class="sub">pendiente</div></div>
+    <div class="item"><div class="val">&mdash;</div><div class="lbl">ROAS total</div><div class="sub">pendiente</div></div>`;
+}
+
+function renderKpis(A) {
+  const cpl = A.totalLeadsMeta>0 ? A.totalSpend/A.totalLeadsMeta : null;
+  const cplCrmPaid = A.crmPaid>0 ? A.totalSpend/A.crmPaid : null;
+  document.getElementById('kpiGrid').innerHTML = `
+    <div class="kpi acc-green"><div class="lbl">Gasto Cta. Principal</div><div class="val">${fmtARS2(A.totalSpend)}</div><div class="note">ARS &middot; campa&ntilde;as L10726</div></div>
+    <div class="kpi acc-green"><div class="lbl">CPL promedio (Meta)</div><div class="val">${cpl?fmtARS2(cpl):'&mdash;'}</div><div class="note">ARS por lead (Meta)</div></div>
+    <div class="kpi acc-white"><div class="lbl">Leads Cta. Principal</div><div class="val">${A.totalLeadsMeta}</div><div class="note">Website leads (Meta p&iacute;xel)</div></div>
+    <div class="kpi acc-white"><div class="lbl">Registros CRM (total)</div><div class="val">${A.crmTotal}</div><div class="note">${A.crmPaid} pagados + ${A.crmOrganic} org&aacute;nicos</div></div>
+    <div class="kpi acc-amber"><div class="lbl">Costo por Registro CRM</div><div class="val">${cplCrmPaid?fmtARS2(cplCrmPaid):'&mdash;'}</div><div class="note">solo tr&aacute;fico pagado (${A.crmPaid} registros)</div></div>
+    <div class="kpi pending acc-amber"><div class="lbl">Ventas</div><div class="val">Pendiente</div><div class="note">se activa al vender</div></div>
+    <div class="kpi pending acc-amber"><div class="lbl">Facturaci&oacute;n total</div><div class="val">Pendiente</div><div class="note">se activa al vender</div></div>
+    <div class="kpi pending acc-gold"><div class="lbl">ROAS total</div><div class="val">Pendiente</div><div class="note">facturaci&oacute;n / gasto</div></div>
+    <div class="kpi pending acc-gold"><div class="lbl">ROAS Hotmart</div><div class="val">Pendiente</div><div class="note">solo trackeable</div></div>`;
+}
+
+function renderWinners(winners) {
+  const wrap = document.getElementById('winnerCards');
+  if (winners.length===0) { wrap.innerHTML = '<div class="note-box">No hay registros pagados suficientes en este rango para armar un ranking.</div>'; return; }
+  wrap.innerHTML = winners.map((w,i)=>`
+    <div class="winner-card ${i===0?'rank1':''}">
+      <div class="rank">#${i+1}</div>
+      <div class="name">${esc(w.name)} <span class="tag" style="font-size:9.5px;">(${esc(w.campaign)})</span></div>
+      <div class="metric-row highlight"><span>CPL CRM</span><b>${fmtARS(w.cplCrm)}</b></div>
+      <div class="metric-row"><span>CPL Meta</span><b>${w.cplMeta?fmtARS(w.cplMeta):'&mdash;'}</b></div>
+      <div class="metric-row"><span>Impresiones</span><b>${w.impressions.toLocaleString('es-AR')}</b></div>
+      <div class="metric-row"><span>Gasto</span><b>${fmtARS2(w.spend)}</b></div>
+    </div>`).join('');
+}
+
+function renderCampCards(A) {
+  const entries = Object.entries(A.campTotals);
+  if (entries.length===0) { document.getElementById('campCards').innerHTML = '<div class="note-box">Sin actividad de Meta Ads en este rango.</div>'; return; }
+  const withCpl = entries.map(([name,c])=>({name, ...c, cpl: c.leads>0? c.spend/c.leads : null}));
+  const valid = withCpl.filter(c=>c.cpl!==null);
+  const minCpl = valid.length ? Math.min(...valid.map(c=>c.cpl)) : null;
+  const maxCpl = valid.length ? Math.max(...valid.map(c=>c.cpl)) : null;
+  document.getElementById('campCards').innerHTML = withCpl.map(c=>{
+    const pct = A.totalLeadsMeta>0 ? (c.leads/A.totalLeadsMeta*100).toFixed(1)+'%' : '&mdash;';
+    let chip = '';
+    if (c.cpl!==null && valid.length>1) {
+      if (c.cpl===minCpl) chip = '<span class="chip best">Mejor CPL</span>';
+      else if (c.cpl===maxCpl) chip = '<span class="chip worst">CPL m&aacute;s alto</span>';
+    }
+    return `<div class="camp-card">
+      <div class="name">EA-CAPTACION-TF-L10726-TEST ${c.name==='Copia'?'&middot; Copia':''} ${chip}</div>
+      <div class="row"><span>Leads</span><b>${c.leads}</b></div>
+      <div class="row"><span>CPL</span><b>${c.cpl?fmtARS2(c.cpl)+' ARS':'&mdash;'}</b></div>
+      <div class="row"><span>% del total</span><b>${pct}</b></div>
+      <div class="row"><span>Gasto</span><b>${fmtARS2(c.spend)} ARS</b></div>
+    </div>`;
+  }).join('');
+}
+
+function renderCampTable(A) {
+  const entries = Object.entries(A.campTotals);
+  const rows = entries.map(([name,c])=>{
+    const fullName = 'EA-CAPTACION-TF-L10726-TEST' + (name==='Copia' ? ' &middot; Copia' : '') + ` (${name})`;
+    const cpl = c.leads>0 ? c.spend/c.leads : null;
+    return `<tr><td>${fullName}</td><td>${fmtARS2(c.spend)}</td><td>${c.leads}</td><td>${cpl?fmtARS2(cpl):'&mdash;'}</td><td>${c.impr.toLocaleString('es-AR')}</td><td>${c.reach.toLocaleString('es-AR')}</td><td>Captaci&oacute;n</td></tr>`;
+  }).join('');
+  const emptyRow = entries.length===0 ? '<tr><td colspan="7" style="text-align:center;color:var(--text2);">Sin datos en este rango</td></tr>' : '';
+  document.getElementById('campTable').innerHTML = `
+    <thead><tr><th>Campa&ntilde;a</th><th>Gasto (ARS)</th><th>Leads</th><th>CPL (ARS)</th><th>Impresiones</th><th>Alcance</th><th>Tipo</th></tr></thead>
+    <tbody>${rows}${emptyRow}<tr class="total-row"><td>Total</td><td>${fmtARS2(A.totalSpend)}</td><td>${A.totalLeadsMeta}</td><td>${A.totalLeadsMeta>0?fmtARS2(A.totalSpend/A.totalLeadsMeta):'&mdash;'}</td><td>${A.totalImpr.toLocaleString('es-AR')}</td><td>${A.totalReach.toLocaleString('es-AR')}</td><td>&mdash;</td></tr></tbody>`;
+}
+
+function renderFunnel(A) {
+  const steps = [
+    { label:"Inversión (ARS)", value:A.totalSpend, display:fmtARS(A.totalSpend) },
+    { label:"Impresiones", value:A.totalImpr, display:A.totalImpr.toLocaleString('es-AR') },
+    { label:"Alcance", value:A.totalReach, display:A.totalReach.toLocaleString('es-AR') },
+    { label:"Leads Meta", value:A.totalLeadsMeta, display:String(A.totalLeadsMeta) },
+    { label:"Registros CRM", value:A.crmTotal, display:String(A.crmTotal) },
+    { label:"Ventas", value:0, display:"0 (pendiente)" },
+  ];
+  const maxVal = Math.max(...steps.map(s=>s.value), 1);
+  document.getElementById('funnelWrap').innerHTML = steps.map(s=>{
+    const pct = Math.max((s.value/maxVal)*100, 4);
+    return `<div class="funnel-step"><div class="funnel-label">${s.label}</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:${pct}%"></div></div><div class="funnel-val">${s.display}</div></div>`;
+  }).join('');
+}
+
+function renderCompare(A) {
+  const cplMeta = A.totalLeadsMeta>0 ? A.totalSpend/A.totalLeadsMeta : null;
+  const cplCrm = A.crmPaid>0 ? A.totalSpend/A.crmPaid : null;
+  document.getElementById('compareCards').innerHTML = `
+    <div class="compare-card meta"><div class="lbl">CPL Meta (reportado)</div><div class="val">${cplMeta?fmtARS(cplMeta)+' ARS':'&mdash;'}</div></div>
+    <div class="compare-card crm"><div class="lbl">CPL CRM (registros pagados reales)</div><div class="val">${cplCrm?fmtARS(cplCrm)+' ARS':'&mdash;'}</div></div>`;
+}
+
+function renderStatRow(A, selDays) {
+  const rangeLbl = selDays.length ? (DAY_LABEL[selDays[0]] + '&ndash;' + DAY_LABEL[selDays[selDays.length-1]]) : '&mdash;';
+  const cplCrmPaid = A.crmPaid>0 ? A.totalSpend/A.crmPaid : null;
+  document.getElementById('statRow').innerHTML = `
+    <div class="stat-box"><div class="val">${A.crmTotal}</div><div class="lbl">Registros CRM totales</div></div>
+    <div class="stat-box" style="border-color:var(--green);"><div class="val">${A.crmPaid}</div><div class="lbl">Registros CRM &mdash; pagado (L10726)</div><div class="note" style="margin-top:4px;">${cplCrmPaid?fmtARS2(cplCrmPaid)+' ARS / registro':'&mdash;'}</div></div>
+    <div class="stat-box" style="border-color:var(--violet);"><div class="val">${A.crmOrganic}</div><div class="lbl">Registros CRM &mdash; org&aacute;nico (IG / WhatsApp)</div><div class="note" style="margin-top:4px;">$0 &mdash; sin costo de medios</div></div>
+    <div class="stat-box"><div class="val">${rangeLbl}</div><div class="lbl">Rango seleccionado</div></div>`;
+}
+
+function renderDailyTable(selDays) {
+  let totalSpend=0, totalLeadsMeta=0, totalCRM=0, totalPaid=0, totalOrganic=0;
+  const rows = selDays.map(day=>{
+    const campRows = CAMPAIGN_DAILY.filter(r=>r.day===day);
+    const spend = campRows.reduce((a,r)=>a+r.spend,0);
+    const leads = campRows.reduce((a,r)=>a+r.leads,0);
+    const cpl = leads>0 ? spend/leads : null;
+    const crmRows = CRM_ROWS.filter(r=>r.day===day);
+    const crmTotal = crmRows.reduce((a,r)=>a+r.leads,0);
+    const paid = crmRows.filter(r=>r.medium==='paid_social').reduce((a,r)=>a+r.leads,0);
+    const organic = crmTotal - paid;
+    const cplCrm = paid>0 ? spend/paid : null;
+    totalSpend+=spend; totalLeadsMeta+=leads; totalCRM+=crmTotal; totalPaid+=paid; totalOrganic+=organic;
+    return `<tr><td>${DAY_LABEL[day]}</td><td>${spend?fmtARS2(spend):'&mdash;'}</td><td>${leads||'&mdash;'}</td><td>${cpl?fmtARS2(cpl):'&mdash;'}</td><td>${crmTotal}</td><td>${paid||'&mdash;'}</td><td>${organic}</td><td>${cplCrm?fmtARS2(cplCrm):'&mdash;'}</td></tr>`;
+  }).join('');
+  const emptyRow = selDays.length===0 ? '<tr><td colspan="8" style="text-align:center;color:var(--text2);">Sin días seleccionados</td></tr>' : '';
+  document.getElementById('dailyTable').innerHTML = `
+    <thead><tr><th>Fecha</th><th>Gasto Meta</th><th>Leads Meta</th><th>CPL Meta</th><th>Registros CRM (total)</th><th>Pagados</th><th>Org&aacute;nicos</th><th>CPL CRM</th></tr></thead>
+    <tbody>${rows}${emptyRow}<tr class="total-row"><td>Total</td><td>${fmtARS2(totalSpend)}</td><td>${totalLeadsMeta}</td><td>${totalLeadsMeta>0?fmtARS2(totalSpend/totalLeadsMeta):'&mdash;'}</td><td>${totalCRM}</td><td>${totalPaid}</td><td>${totalOrganic}</td><td>${totalPaid>0?fmtARS2(totalSpend/totalPaid):'&mdash;'}</td></tr></tbody>`;
+}
+
+function renderAudiencia(A) {
+  document.getElementById('countryList').innerHTML = A.totalLeadsMeta>0
+    ? `<li><span><span class="flag">&#127462;&#127479;</span>Argentina</span><span>${A.totalLeadsMeta} leads &middot; 100%</span></li>`
+    : `<li><span>Sin datos en este rango</span></li>`;
+  document.getElementById('ageChips').innerHTML = A.ages.map(a=>`<div class="age-chip">${a.range} &middot; <b>${a.value}</b> leads</div>`).join('');
+}
+
+// ================== CHARTS ==================
 Chart.defaults.color = '#9CA3AF';
 Chart.defaults.font.family = 'Montserrat';
 Chart.defaults.borderColor = '#262626';
-
-function fmtARS(v) { return '$' + Number(v).toLocaleString('es-AR', { maximumFractionDigits: 0 }); }
 const gridColor = 'rgba(255,255,255,0.06)';
 const axisTitle = (text) => ({ display:true, text, color:'#9CA3AF', font:{ size:11, weight:'700', family:'Montserrat' }, padding:{ top:6 } });
 
@@ -526,139 +764,149 @@ const centerTextPlugin = {
 };
 Chart.register(centerTextPlugin);
 
-new Chart(document.getElementById('chartCPL'), {
-  type:'line',
-  data:{ labels:DAILY_LABELS, datasets:[{
-    label:'CPL (ARS)', data:DAILY_CPL_META,
-    borderColor:'#4ade80', backgroundColor:'rgba(74,222,128,0.18)',
-    tension:0.35, fill:true, spanGaps:true, borderWidth:2.5,
-    pointBackgroundColor: DAILY_CPL_META.map(v => v!==null ? '#4ade80' : 'transparent'),
-    pointBorderColor:'#0A0A0A', pointBorderWidth:2, pointRadius:6, pointHoverRadius:8,
-  }] },
-  options:{
-    responsive:true, maintainAspectRatio:false,
-    layout:{ padding:{ top:26 } },
-    plugins:{
-      legend:{ display:false },
-      valueLabel:{ color:'#4ade80', formatter:(v)=> v!==null ? fmtARS(v) : '' },
-      tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10, titleColor:'#fff', bodyColor:'#4ade80',
-        callbacks:{ label:(ctx)=> ' CPL: ' + fmtARS(ctx.raw) } }
-    },
-    scales:{
-      x:{ grid:{ color:gridColor, drawTicks:false }, title:axisTitle('Fecha del lanzamiento') },
-      y:{ beginAtZero:true, grid:{ color:gridColor }, title:axisTitle('Costo por lead (ARS)'), ticks:{ callback:(v)=>fmtARS(v) } }
-    }
-  }
-});
+function renderCharts(selDays, A) {
+  destroyCharts();
+  const labels = selDays.map(d=>DAY_LABEL[d]);
+  const dailySpend = selDays.map(d=>CAMPAIGN_DAILY.filter(r=>r.day===d).reduce((a,r)=>a+r.spend,0));
+  const dailyLeads = selDays.map(d=>CAMPAIGN_DAILY.filter(r=>r.day===d).reduce((a,r)=>a+r.leads,0));
+  const dailyCpl = selDays.map((d,i)=> dailyLeads[i]>0 ? dailySpend[i]/dailyLeads[i] : null);
+  const dailyCrmTotal = selDays.map(d=>CRM_ROWS.filter(r=>r.day===d).reduce((a,r)=>a+r.leads,0));
 
-new Chart(document.getElementById('chartLeadsDiarios'), {
-  type:'bar',
-  data:{ labels:DAILY_LABELS, datasets:[{
-    label:'Leads', data:DAILY_LEADS_META, borderRadius:6, maxBarThickness:44,
-    backgroundColor: DAILY_LEADS_META.map(v => v === Math.max(...DAILY_LEADS_META) && v>0 ? '#4ade80' : '#2D6A4F'),
-    hoverBackgroundColor:'#86efac'
-  }] },
-  options:{
-    responsive:true, maintainAspectRatio:false,
-    layout:{ padding:{ top:26 } },
-    plugins:{
-      legend:{ display:false },
-      valueLabel:{ color:'#ffffff', formatter:(v)=> v>0 ? v : '' },
-      tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10, titleColor:'#fff', bodyColor:'#4ade80',
-        callbacks:{ label:(ctx)=> ' ' + ctx.raw + ' leads' } }
-    },
-    scales:{
-      x:{ grid:{ display:false }, title:axisTitle('Fecha del lanzamiento') },
-      y:{ beginAtZero:true, grid:{ color:gridColor }, title:axisTitle('Cantidad de leads'), ticks:{ precision:0 } }
+  charts.push(new Chart(document.getElementById('chartCPL'), {
+    type:'line',
+    data:{ labels, datasets:[{
+      label:'CPL (ARS)', data:dailyCpl,
+      borderColor:'#4ade80', backgroundColor:'rgba(74,222,128,0.18)',
+      tension:0.35, fill:true, spanGaps:true, borderWidth:2.5,
+      pointBackgroundColor: dailyCpl.map(v => v!==null ? '#4ade80' : 'transparent'),
+      pointBorderColor:'#0A0A0A', pointBorderWidth:2, pointRadius:6, pointHoverRadius:8,
+    }] },
+    options:{
+      responsive:true, maintainAspectRatio:false, layout:{ padding:{ top:26 } },
+      plugins:{ legend:{ display:false }, valueLabel:{ color:'#4ade80', formatter:(v)=> v!==null ? fmtARS(v) : '' },
+        tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10, titleColor:'#fff', bodyColor:'#4ade80', callbacks:{ label:(ctx)=> ' CPL: ' + fmtARS(ctx.raw) } } },
+      scales:{ x:{ grid:{ color:gridColor, drawTicks:false }, title:axisTitle('Fecha del lanzamiento') },
+        y:{ beginAtZero:true, grid:{ color:gridColor }, title:axisTitle('Costo por lead (ARS)'), ticks:{ callback:(v)=>fmtARS(v) } } }
     }
-  }
-});
+  }));
 
-new Chart(document.getElementById('chartMetaVsCRM'), {
-  type:'bar',
-  data:{ labels:DAILY_LABELS, datasets:[
-    { label:'Leads Meta', data:DAILY_LEADS_META, backgroundColor:'#2D6A4F', borderRadius:5, maxBarThickness:34 },
-    { label:'Registros CRM', data:DAILY_CRM_TOTAL, backgroundColor:'#fbbf24', borderRadius:5, maxBarThickness:34 }
-  ]},
-  options:{
-    responsive:true, maintainAspectRatio:false,
-    layout:{ padding:{ top:22 } },
-    plugins:{
-      legend:{ position:'bottom', labels:{ boxWidth:10, usePointStyle:true, pointStyle:'circle' } },
-      valueLabel:{ color:'#ffffff', formatter:(v)=> v>0 ? v : '' },
-      tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10 }
-    },
-    scales:{
-      x:{ grid:{ display:false }, title:axisTitle('Fecha') },
-      y:{ beginAtZero:true, grid:{ color:gridColor }, title:axisTitle('Cantidad') }
+  charts.push(new Chart(document.getElementById('chartLeadsDiarios'), {
+    type:'bar',
+    data:{ labels, datasets:[{ label:'Leads', data:dailyLeads, borderRadius:6, maxBarThickness:44,
+      backgroundColor: dailyLeads.map(v => v === Math.max(...dailyLeads) && v>0 ? '#4ade80' : '#2D6A4F'), hoverBackgroundColor:'#86efac' }] },
+    options:{
+      responsive:true, maintainAspectRatio:false, layout:{ padding:{ top:26 } },
+      plugins:{ legend:{ display:false }, valueLabel:{ color:'#ffffff', formatter:(v)=> v>0 ? v : '' },
+        tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10, titleColor:'#fff', bodyColor:'#4ade80', callbacks:{ label:(ctx)=> ' ' + ctx.raw + ' leads' } } },
+      scales:{ x:{ grid:{ display:false }, title:axisTitle('Fecha del lanzamiento') },
+        y:{ beginAtZero:true, grid:{ color:gridColor }, title:axisTitle('Cantidad de leads'), ticks:{ precision:0 } } }
     }
-  }
-});
+  }));
 
-new Chart(document.getElementById('chartFuente'), {
-  type:'doughnut',
-  data:{ labels:FUENTE_LABELS, datasets:[{ data:FUENTE_VALUES, backgroundColor:['#86efac','#4ade80','#9CA3AF','#2D6A4F','#7c3aed'], borderColor:'#141414', borderWidth:3, hoverOffset:6 }] },
-  options:{
-    responsive:true, maintainAspectRatio:false, cutout:'62%',
-    plugins:{
-      legend:{ position:'bottom', labels:{ boxWidth:10, font:{size:10}, usePointStyle:true, pointStyle:'circle' } },
-      centerText:{ text:String(FUENTE_VALUES.reduce((a,b)=>a+b,0)), sub:'registros' },
-      tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10,
-        callbacks:{ label:(ctx)=>{ const total = ctx.dataset.data.reduce((a,b)=>a+b,0); const pct=(ctx.raw/total*100).toFixed(1); return ` ${ctx.label}: ${ctx.raw} (${pct}%)`; } } }
+  charts.push(new Chart(document.getElementById('chartMetaVsCRM'), {
+    type:'bar',
+    data:{ labels, datasets:[
+      { label:'Leads Meta', data:dailyLeads, backgroundColor:'#2D6A4F', borderRadius:5, maxBarThickness:34 },
+      { label:'Registros CRM', data:dailyCrmTotal, backgroundColor:'#fbbf24', borderRadius:5, maxBarThickness:34 }
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false, layout:{ padding:{ top:22 } },
+      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, usePointStyle:true, pointStyle:'circle' } }, valueLabel:{ color:'#ffffff', formatter:(v)=> v>0 ? v : '' },
+        tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10 } },
+      scales:{ x:{ grid:{ display:false }, title:axisTitle('Fecha') }, y:{ beginAtZero:true, grid:{ color:gridColor }, title:axisTitle('Cantidad') } }
     }
-  }
-});
+  }));
 
-new Chart(document.getElementById('chartPaises'), {
-  type:'bar',
-  data:{ labels:COUNTRY_LABELS, datasets:[{ label:'Leads', data:COUNTRY_VALUES, backgroundColor:'#4ade80', borderRadius:6, maxBarThickness:36 }] },
-  options:{
-    indexAxis:'y', responsive:true, maintainAspectRatio:false,
-    layout:{ padding:{ right:70 } },
-    plugins:{
-      legend:{ display:false },
-      valueLabel:{ color:'#ffffff', formatter:(v)=> `${v} leads (100%)` },
-      tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10 }
-    },
-    scales:{
-      x:{ beginAtZero:true, grid:{ color:gridColor }, title:axisTitle('Cantidad de leads') },
-      y:{ grid:{ display:false } }
+  const fuenteLabels = ["Instagram (orgánico)","WhatsApp (orgánico)","Directo/sin UTM","Instagram (pago)","Facebook (pago)"];
+  const fuenteValues = [A.fuente.igOrg, A.fuente.waOrg, A.fuente.directo, A.fuente.igPago, A.fuente.fbPago];
+  charts.push(new Chart(document.getElementById('chartFuente'), {
+    type:'doughnut',
+    data:{ labels:fuenteLabels, datasets:[{ data:fuenteValues, backgroundColor:['#86efac','#4ade80','#9CA3AF','#2D6A4F','#7c3aed'], borderColor:'#141414', borderWidth:3, hoverOffset:6 }] },
+    options:{
+      responsive:true, maintainAspectRatio:false, cutout:'62%',
+      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, font:{size:10}, usePointStyle:true, pointStyle:'circle' } },
+        centerText:{ text:String(fuenteValues.reduce((a,b)=>a+b,0)), sub:'registros' },
+        tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10,
+          callbacks:{ label:(ctx)=>{ const total = ctx.dataset.data.reduce((a,b)=>a+b,0)||1; const pct=(ctx.raw/total*100).toFixed(1); return ` ${ctx.label}: ${ctx.raw} (${pct}%)`; } } } }
     }
-  }
-});
+  }));
 
-new Chart(document.getElementById('chartGenero'), {
-  type:'doughnut',
-  data:{ labels:['Femenino','Masculino','No especificado'], datasets:[{ data:[GENDER.femenino, GENDER.masculino, GENDER.unknown], backgroundColor:['#7c3aed','#4ade80','#9CA3AF'], borderColor:'#141414', borderWidth:3, hoverOffset:6 }] },
-  options:{
-    responsive:true, maintainAspectRatio:false, cutout:'62%',
-    plugins:{
-      legend:{ position:'bottom', labels:{ boxWidth:10, usePointStyle:true, pointStyle:'circle',
-        generateLabels:(chart)=>{ const d=chart.data; const total=d.datasets[0].data.reduce((a,b)=>a+b,0);
+  charts.push(new Chart(document.getElementById('chartPaises'), {
+    type:'bar',
+    data:{ labels:['Argentina'], datasets:[{ label:'Leads', data:[A.totalLeadsMeta], backgroundColor:'#4ade80', borderRadius:6, maxBarThickness:36 }] },
+    options:{
+      indexAxis:'y', responsive:true, maintainAspectRatio:false, layout:{ padding:{ right:70 } },
+      plugins:{ legend:{ display:false }, valueLabel:{ color:'#ffffff', formatter:(v)=> `${v} leads (100%)` },
+        tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10 } },
+      scales:{ x:{ beginAtZero:true, grid:{ color:gridColor }, title:axisTitle('Cantidad de leads') }, y:{ grid:{ display:false } } }
+    }
+  }));
+
+  charts.push(new Chart(document.getElementById('chartGenero'), {
+    type:'doughnut',
+    data:{ labels:['Femenino','Masculino','No especificado'], datasets:[{ data:[A.genderAgg.femenino, A.genderAgg.masculino, A.genderAgg.unknown], backgroundColor:['#7c3aed','#4ade80','#9CA3AF'], borderColor:'#141414', borderWidth:3, hoverOffset:6 }] },
+    options:{
+      responsive:true, maintainAspectRatio:false, cutout:'62%',
+      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, usePointStyle:true, pointStyle:'circle',
+        generateLabels:(chart)=>{ const d=chart.data; const total=d.datasets[0].data.reduce((a,b)=>a+b,0)||1;
           return d.labels.map((l,i)=>({ text:`${l} · ${(d.datasets[0].data[i]/total*100).toFixed(1)}%`, fillStyle:d.datasets[0].backgroundColor[i], strokeStyle:d.datasets[0].backgroundColor[i], index:i })); } } },
-      centerText:{ text:String(GENDER.femenino+GENDER.masculino+GENDER.unknown), sub:'leads Meta' },
-      tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10 }
+        centerText:{ text:String(A.genderAgg.femenino+A.genderAgg.masculino+A.genderAgg.unknown), sub:'leads Meta' },
+        tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10 } }
     }
-  }
+  }));
+
+  charts.push(new Chart(document.getElementById('chartEdades'), {
+    type:'bar',
+    data:{ labels:A.ages.map(a=>a.range), datasets:[{ label:'Leads', data:A.ages.map(a=>a.value), backgroundColor:'#4ade80', borderRadius:6, maxBarThickness:40, hoverBackgroundColor:'#86efac' }] },
+    options:{
+      responsive:true, maintainAspectRatio:false, layout:{ padding:{ top:26 } },
+      plugins:{ legend:{ display:false }, valueLabel:{ color:'#ffffff', formatter:(v)=> v>0 ? v : '' },
+        tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10, callbacks:{ label:(ctx)=> ' '+ctx.raw+' leads' } } },
+      scales:{ x:{ grid:{ display:false }, title:axisTitle('Rango etario') }, y:{ beginAtZero:true, grid:{ color:gridColor }, title:axisTitle('Cantidad de leads'), ticks:{ precision:0 } } }
+    }
+  }));
+}
+
+// ================== FILTER CONTROLS ==================
+const dateFromEl = document.getElementById('dateFrom');
+const dateToEl = document.getElementById('dateTo');
+const minDay = DAYS[0], maxDay = DAYS[DAYS.length-1];
+dateFromEl.min = minDay; dateFromEl.max = maxDay;
+dateToEl.min = minDay; dateToEl.max = maxDay;
+
+function applyRange(from, to) {
+  if (from > to) { const t = from; from = to; to = t; }
+  dateFromEl.value = from; dateToEl.value = to;
+  const selDays = DAYS.filter(d => d >= from && d <= to);
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+  if (from===minDay && to===maxDay) document.querySelector('[data-preset="all"]').classList.add('active');
+  else if (from===to && to===maxDay) document.querySelector('[data-preset="today"]').classList.add('active');
+  renderAll(selDays);
+}
+
+document.querySelector('[data-preset="all"]').addEventListener('click', ()=> applyRange(minDay, maxDay));
+document.querySelector('[data-preset="today"]').addEventListener('click', ()=> applyRange(maxDay, maxDay));
+document.querySelector('[data-preset="week"]').addEventListener('click', ()=> {
+  const maxD = new Date(maxDay+'T00:00:00Z');
+  const weekAgo = new Date(maxD.getTime() - 6*86400000);
+  const weekAgoStr = weekAgo.toISOString().slice(0,10);
+  applyRange(weekAgoStr < minDay ? minDay : weekAgoStr, maxDay);
+});
+dateFromEl.addEventListener('change', ()=> applyRange(dateFromEl.value || minDay, dateToEl.value || maxDay));
+dateToEl.addEventListener('change', ()=> applyRange(dateFromEl.value || minDay, dateToEl.value || maxDay));
+
+// ================== TABS ==================
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
 });
 
-new Chart(document.getElementById('chartEdades'), {
-  type:'bar',
-  data:{ labels:AGES.map(a=>a.range), datasets:[{ label:'Leads', data:AGES.map(a=>a.value), backgroundColor:'#4ade80', borderRadius:6, maxBarThickness:40, hoverBackgroundColor:'#86efac' }] },
-  options:{
-    responsive:true, maintainAspectRatio:false,
-    layout:{ padding:{ top:26 } },
-    plugins:{
-      legend:{ display:false },
-      valueLabel:{ color:'#ffffff', formatter:(v)=> v>0 ? v : '' },
-      tooltip:{ backgroundColor:'#1C1C1C', borderColor:'#262626', borderWidth:1, padding:10, callbacks:{ label:(ctx)=> ' '+ctx.raw+' leads' } }
-    },
-    scales:{
-      x:{ grid:{ display:false }, title:axisTitle('Rango etario') },
-      y:{ beginAtZero:true, grid:{ color:gridColor }, title:axisTitle('Cantidad de leads'), ticks:{ precision:0 } }
-    }
-  }
-});
+// ================== INIT ==================
+applyRange(minDay, maxDay);
 </script>
 </body>
 </html>
